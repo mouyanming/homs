@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+  layout:decorator="admin">
+<head>
+    <!-- DataTables CSS -->
+    <link th:href="@{/admin/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css}" rel="stylesheet" />
+
+    <!-- DataTables Responsive CSS -->
+    <link th:href="@{/admin/bower_components/datatables-responsive/css/dataTables.responsive.css}" rel="stylesheet" />
+
+</head>
+
+<body>
+        <div layout:fragment="content">
+            <div class="container">
+                <!-- content -->
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="page-header bootstrap-admin-content-title">
+                                <h2>ユーザー新規登録</h2>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p></p>
+
+                    <div class="row">
+                        <div class="col-lg-10">
+                            <div class="panel panel-default bootstrap-admin-no-table-panel">
+                                <div class="panel-heading">
+                                    <div class="text-muted bootstrap-admin-box-title">編集項目</div>
+                                </div>
+                                <div class="bootstrap-admin-no-table-panel-content bootstrap-admin-panel-content collapse in">
+                                    <form class="form-horizontal"  th:action="@{/user/add}" method="post"  th:object="${userDto}"  >
+                                        <fieldset>
+                                            <div class="form-group">
+                                                <label class="col-lg-3 control-label" for="select01"><font class="font-red">※</font>ユーザー名</label>
+                                                <div class="col-lg-6">
+                                                    <input type="text" class="form-control col-md-6" id="userId" name="userId" th:field="*{userId}"  maxlength="50" />
+                                                    <p class="color-red" th:if="${#fields.hasErrors('userId')}" th:errors="*{userId}">...</p>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-lg-3 control-label" for="select01"><font class="font-red">※</font>パスワード</label>
+                                                <div class="col-lg-6">
+                                                    <input type="password" class="form-control col-md-6" id="passWord" name="passWord" th:field="*{passWord}" maxlength="15" />
+                                                    <p class="color-red" th:if="${#fields.hasErrors('passWord')}" th:errors="*{passWord}">...</p>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-lg-3 control-label" for="select01"><font class="font-red">※</font>パスワード（再入力）</label>
+                                                <div class="col-lg-6">
+                                                    <input type="password" class="form-control col-md-6" id="passWordTwice" name="passWordTwice" th:field="*{passWordTwice}" maxlength="15" />
+                                                    <p class="color-red" th:if="${#fields.hasErrors('passWordTwice')}" th:errors="*{passWordTwice}">...</p>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-lg-3 control-label" for="select01"><font class="font-red">※</font>表示名</label>
+                                                <div class="col-lg-6">
+                                                    <input type="text" class="form-control col-md-6" id="displayName" name="displayName" th:field="*{displayName}" maxlength="15" />
+                                                    <p class="color-red" th:if="${#fields.hasErrors('displayName')}" th:errors="*{displayName}">...</p>
+                                                </div>
+                                            </div>
+											<div class="form-group">
+                                                <label class="col-lg-3 control-label" for="optionsCheckbox"><font class="font-red">※</font>権限</label>
+                                                <div class="col-lg-8">
+                                                    <label class="uniform">
+                                                        <input class="uniform_on" type="radio" name="authorities" id=authorities checked value="ROLE_JIMU" th:field="*{authorities}" > 事務処理権限
+                                                    </label>
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                    <label class="uniform">
+                                                        <input class="uniform_on" type="radio" name="authorities" id="authorities" value="ROLE_NORMAL_USER" th:field="*{authorities}"> 一般ユーザ
+                                                    </label>
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                    <label class="uniform">
+                                                        <input class="uniform_on" type="radio" name="authorities" id="authorities" value="ROLE_MANAGER" th:field="*{authorities}"> 上位管理者権限
+                                                    </label>
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                    <label class="uniform">
+                                                        <input class="uniform_on" type="radio" name="authorities" id="authorities" value="ROLE_ADMIN" th:field="*{authorities}" > システムユーザ
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <hr/>
+                                            <div align="right">
+                                                <button type="submit" class="btn btn-primary">　　登　録　　</button>　　　
+                                                <button type="button" class="btn btn-default" id="clear">　クリア　</button>
+                                            </div>
+                                        </fieldset>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+             <div th:if="${errMessage}" class="col-lg-12" id = "alertMessage">
+                  <div class="alert alert-danger bootstrap-admin-alert"><button type="button" class="close" data-dismiss="alert">×</button><p th:text="${errMessage}"></p></div>
+             </div>
+         </div>
+
+        </div>
+        <!-- /layout:fragment="content" -->
+
+<div layout:fragment="moreScripts">
+    <!-- DataTables JavaScript -->
+    <script th:src="@{/admin/bower_components/datatables/media/js/jquery.dataTables.min.js}"></script>
+    <script th:src="@{/admin/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js}"></script>
+
+    <!-- Page-Level Demo Scripts - Tables - Use for reference -->
+    <script>
+    $(document).ready(function() {
+        $('#dataTables-example').DataTable({
+                responsive: true
+        });
+    });
+    </script>
+</div>
+</body>
+
+</html>

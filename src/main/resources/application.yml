@@ -1,0 +1,17 @@
+spring:
+  profiles.active: dev
+
+  secuirt:
+    basic.enable: false
+
+  datasource:
+    url: jdbc:h2:~/homs;MODE=MYSQL
+    driverClassName: org.h2.Driver
+
+  jpa:
+    hibernate.ddl-auto: create-drop
+    database-platform: org.hibernate.dialect.H2Dialect
+  thymeleaf:
+    mode: LEGACYHTML5
+    encoding: UTF-8
+logging.level.org.springframework.security: INFO

@@ -1,0 +1,166 @@
+.margin-top-6{
+	margin-top:6px;
+}
+.padding-bottom-6{
+	padding-bottom:6px;
+}
+.margin-top-7{
+	margin-top:7px;
+}
+.width-80{
+	width: 80px;
+}
+.width-100{
+	width:100px;
+}
+.width-150{
+	width: 150px;
+}
+.width-180{
+	width: 180px;
+}
+.width-250{
+	width:250px;
+}
+.width-300{
+	width: 300px;
+}
+.width-350{
+	width: 350px;
+}
+.width-450{
+	width:450px;
+}
+.width-500{
+    width: 500px;
+}
+.color-red{
+	color:red;
+}
+.margin-left-207{
+	margin-left:207px;
+}
+.display-inline{
+	display:inline;
+}
+.display-none{
+    display:none;
+}
+.white-space-nowrap{
+	white-space:nowrap;
+}
+.link_no_underline a:hover{
+	 text-decoration: none;
+  }
+.margin-left-50{
+    margin-left:50px;
+}
+.margin-top-5{
+    margin-top:5px;
+}
+.margin-bottom-5{
+    margin-bottom:5px;
+}
+
+.buttons-title{
+    margin-top: 20px;
+}
+.buttons-group{
+    margin-top: 10px;
+}
+.the-icons{
+    margin-left: 0;
+    list-style: none;
+}
+.the-icons li {
+    float: left;
+    width: 25%;
+    line-height: 25px;
+}
+.panel-bootstrap-switch,
+.panel-bootstrap-switch .bootstrap-admin-panel-content{
+    float: left;
+}
+.panel-bootstrap-switch .buttons-group{
+    margin-top: 0;
+}
+.panel-bootstrap-switch .buttons-group .has-switch{
+    margin-top: 10px;
+}
+.panel-bootstrap-switch #btn-destroy-switch,
+.panel-bootstrap-switch #btn-create{
+    margin-top: 5px;
+}
+.panel-bootstrap-switch #btn-destroy-switch{
+    margin-bottom: 10px;
+}
+.panel-bootstrap-switch .bootstrap-switch-footer{
+    margin-top: 20px;
+}
+.resize-none{
+    resize: none;
+}
+.short_hr {
+    background-color: #fff;
+    border-style: dotted;
+    border-top: 1px dotted #bbb;
+    width: 80%;
+}
+.font-weight-normal{
+    font-weight: normal;
+}
+.font-red{
+	color: #ea4843;
+}
+.font-blue{
+	color: blue;
+}
+.font-description{
+	color: #777;
+}
+.border-solid-ccc{
+	border: 1px solid #ccc;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+}
+.display-none{
+	display: none;
+}
+.position-fixed{
+    position: fixed;
+}
+.processing-gif{
+    top: 47%;
+    left: 47%;
+    height: 60px;
+    width: 60px;
+}
+.margin-left-260{
+	margin-left: 260px;
+}
+.width-200{
+	width:200px;
+}
+.margin-left-800{
+	margin-left:800px;
+}
+.margin-left-230{
+	margin-left:230px ! important;
+}
+.padding-top-4{
+	padding-top:4px;
+}
+.margin-left-5-important{
+	margin-left:5px !important;
+}
+.margin-left-48{
+    margin-left:-48px;
+}
+.margin-left-10{
+    margin-left:10px;
+}
+.margin-left-20{
+    margin-left:20px;
+}
+.padding-5 {
+    padding: 5px;
+}
