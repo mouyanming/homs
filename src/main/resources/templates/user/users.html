@@ -5,11 +5,12 @@
   xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
   layout:decorator="admin">
 <head>
+    <meta charset="utf-8" />
     <!-- DataTables CSS -->
-    <link th:href="@{/admin/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css}" rel="stylesheet" />
+    <link th:href="@{/admin/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css}" href="../../static/admin/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css"  rel="stylesheet" />
 
     <!-- DataTables Responsive CSS -->
-    <link th:href="@{/admin/bower_components/datatables-responsive/css/dataTables.responsive.css}" rel="stylesheet" />
+    <link th:href="@{/admin/bower_components/datatables-responsive/css/dataTables.responsive.css}" href="../../static/admin/bower_components/datatables-responsive/css/dataTables.responsive.css" rel="stylesheet" />
 
 </head>
 
@@ -68,7 +69,7 @@
                                     </thead>
                                     <tbody>
                                         <tr th:each="result : ${users}" class="odd gradeX">
-                                            <td th:text="${result.userId}">...</td>
+                                            <td><a th:href="'/user/update/' + ${result.userId}" th:text="${result.userId}"></a></td>
                                             <td th:text="${result.usrNm}">...</td>
                                             <td th:text="${result.usrBth}">...</td>
                                             <td th:text="${result.usrSex == 0 ? '男性' : '女性'}"></td>
@@ -111,8 +112,8 @@
 
 <div layout:fragment="moreScripts">
     <!-- DataTables JavaScript -->
-    <script th:src="@{/admin/bower_components/datatables/media/js/jquery.dataTables.min.js}"></script>
-    <script th:src="@{/admin/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js}"></script>
+    <script th:src="@{/admin/bower_components/datatables/media/js/jquery.dataTables.min.js}" src="../../static/admin/bower_components/datatables/media/js/jquery.dataTables.min.js"></script>
+    <script th:src="@{/admin/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js}" src="../../static/admin/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js"></script>
 
     <!-- Page-Level Demo Scripts - Tables - Use for reference -->
     <script type="text/javascript">

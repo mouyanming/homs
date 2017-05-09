@@ -9,9 +9,12 @@ spring:
     driverClassName: org.h2.Driver
 
   jpa:
-    hibernate.ddl-auto: create-drop
+    hibernate.ddl-auto: create
     database-platform: org.hibernate.dialect.H2Dialect
   thymeleaf:
     mode: LEGACYHTML5
     encoding: UTF-8
+  h2:
+    console.enabled: true
+
 logging.level.org.springframework.security: INFO

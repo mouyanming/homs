@@ -15,6 +15,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import jp.co.hyron.ope.dto.UserDto;
+import jp.co.hyron.ope.entity.type.AuthoritiesId;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,6 +24,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
  * 本システム用 のユーザ情報
@@ -39,9 +43,6 @@ public class User implements UserDetails {
     @Id
     @Column(name = "user_id")
     protected String userId;
-
-    @Column(name = "display_name")
-    protected String displayName;
 
     @Column(name = "password")
     protected String password;
@@ -95,13 +96,12 @@ public class User implements UserDetails {
     private String usrTtl;
 
     @Column(name = "enabled")
-    private boolean enabled;
+    private boolean enabled = true;
 
     public User(String userId, String password, String displayName, boolean enabled, List<Authorities> authorities) {
         this.userId = userId;
         this.password = password;
         this.enabled = enabled;
-        this.displayName = displayName;
         this.authorities = authorities;
     }
 
@@ -149,5 +149,84 @@ public class User implements UserDetails {
     @Override
     public String getUsername() {
         return this.userId;
+    }
+
+    public void convertToUser(UserDto dto, boolean isAdmin) {
+        PasswordEncoder encoder = new BCryptPasswordEncoder();
+        // 変更あるかどうかチェック
+        if (this.userId == null || "".equals(this.userId)) {
+            this.userId = dto.getUserId();
+        }
+        if (this.password != encoder.encode(dto.getPassWord())) {
+            this.password = encoder.encode(dto.getPassWord());
+        }
+        // 自分更新不可の項目
+        if (isAdmin) {
+            if (this.usrNm != dto.getUsrNm()) {
+                this.usrNm = dto.getUsrNm();
+            }
+            if (this.usrSex != dto.getUsrSex()) {
+                this.usrSex = dto.getUsrSex();
+            }
+            if (this.usrMl != dto.getUsrMl()) {
+                this.usrMl = dto.getUsrMl();
+            }
+            if (this.spUsrId != dto.getSpUsrId()) {
+                this.spUsrId = dto.getSpUsrId();
+            }
+            if (this.jsgKb != dto.getJsgKb()) {
+                this.jsgKb = dto.getJsgKb();
+            }
+            if (this.epDt != dto.getEpDt()) {
+                this.epDt = dto.getEpDt();
+            }
+            if (this.lfDt != dto.getLfDt()) {
+                this.lfDt = dto.getLfDt();
+            }
+            if (this.acSts != dto.getAcSts()) {
+                this.acSts = dto.getAcSts();
+            }
+            if (this.pwdErrCnt != dto.getPwdErrCnt()) {
+                this.pwdErrCnt = dto.getPwdErrCnt();
+            }
+            if (this.authorities == null || this.authorities.isEmpty()) {
+                Authorities authorities = new Authorities();
+                List<Authorities> list = new ArrayList<Authorities>();
+                authorities.setId(new AuthoritiesId(dto.getUserId(), dto.getAuthorities()));
+                list.add(authorities);
+                this.authorities = list;
+            } else {
+                Authorities authorities = this.authorities.get(0);
+                if (authorities.getId().getAuthority() != dto.getAuthorities()) {
+                    List<Authorities> list = new ArrayList<Authorities>();
+                    authorities.setId(new AuthoritiesId(dto.getUserId(), dto.getAuthorities()));
+                    list.add(authorities);
+                }
+            }
+            if (this.enabled != dto.isEnbaled()) {
+                this.enabled = dto.isEnbaled();
+            }
+        }
+        if (this.usrBth != dto.getUsrBth()) {
+            this.usrBth = dto.getUsrBth();
+        }
+        if (this.usrMb != dto.getUsrMb()) {
+            this.usrMb = dto.getUsrMb();
+        }
+        this.updTm = new Timestamp(System.currentTimeMillis());
+
+    }
+
+    public boolean isRoleUser(String role) {
+        if (this.authorities == null) {
+            return false;
+        } else if (this.authorities.isEmpty()) {
+            return false;
+        } else if (this.authorities.get(0).getId().getAuthority() != role) {
+            return false;
+        } else {
+            return true;
+        }
+
     }
 }

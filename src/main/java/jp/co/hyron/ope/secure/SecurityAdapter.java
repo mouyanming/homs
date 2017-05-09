@@ -46,6 +46,10 @@ public class SecurityAdapter extends WebSecurityConfigurerAdapter {
                 .and().formLogin().loginPage("/login").usernameParameter("userid").passwordParameter("password").defaultSuccessUrl("/index.html").failureUrl("/login?error").permitAll().and().logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login?logout").deleteCookies("JSESSIONID").invalidateHttpSession(true).permitAll().and().rememberMe()
                 .tokenRepository(jdbcTokenRepository()).tokenValiditySeconds(604800);// remember for a week. ( 1 * 60 * 60 * 24 * 7 ) sec
+        http.authorizeRequests().antMatchers("/console/**").permitAll();
+
+        http.csrf().disable();
+        http.headers().frameOptions().disable();
     }
 
     @Override

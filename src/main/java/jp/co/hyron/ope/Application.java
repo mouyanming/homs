@@ -18,8 +18,11 @@ package jp.co.hyron.ope;
 
 import java.util.List;
 
+import org.h2.server.web.WebServlet;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.servlet.ServletRegistrationBean;
+import org.springframework.context.annotation.Bean;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.stereotype.Controller;
@@ -50,6 +53,13 @@ public class Application implements WebMvcConfigurer {
 
     public static void main(String[] args) throws Exception {
         new SpringApplicationBuilder(Application.class).run(args);
+    }
+
+    @Bean
+    ServletRegistrationBean h2servletRegistration() {
+        ServletRegistrationBean registrationBean = new ServletRegistrationBean(new WebServlet());
+        registrationBean.addUrlMappings("/console/*");
+        return registrationBean;
     }
 
     @Override
