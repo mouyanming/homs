@@ -10,6 +10,9 @@
 
     <!-- DataTables Responsive CSS -->
     <link th:href="@{/admin/bower_components/datatables-responsive/css/dataTables.responsive.css}" rel="stylesheet" />
+    
+    <!-- Datepicker CSS -->
+    <link th:href="@{/vendors/bootstrap-datepicker/css/datepicker.css}" href="/vendors/bootstrap-datepicker/css/datepicker.css" rel="stylesheet" media="screen" >
 
 </head>
 
@@ -214,6 +217,7 @@
     <!-- DataTables JavaScript -->
     <script th:src="@{/admin/bower_components/datatables/media/js/jquery.dataTables.min.js}"></script>
     <script th:src="@{/admin/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js}"></script>
+    <script th:src="@{/vendors/bootstrap-datepicker/js/bootstrap-datepicker.js}" type="text/javascript" src="/vendors/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
 
     <!-- Page-Level Demo Scripts - Tables - Use for reference -->
     <script>
@@ -221,6 +225,8 @@
         $('#dataTables-example').DataTable({
                 responsive: true
         });
+        $('#usrBth').datepicker();
+        $('#epDt').datepicker();
     });
     </script>
 </div>
