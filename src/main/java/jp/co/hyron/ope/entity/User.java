@@ -157,9 +157,12 @@ public class User implements UserDetails {
         if (this.userId == null || "".equals(this.userId)) {
             this.userId = dto.getUserId();
         }
-        if (this.password != encoder.encode(dto.getPassWord())) {
-            this.password = encoder.encode(dto.getPassWord());
+        if (dto.getPassWord() != null && !"".equals(dto.getPassWord())) {
+            if (this.password != encoder.encode(dto.getPassWord())) {
+                this.password = encoder.encode(dto.getPassWord());
+            }
         }
+
         // 自分更新不可の項目
         if (isAdmin) {
             if (this.usrNm != dto.getUsrNm()) {
@@ -189,6 +192,9 @@ public class User implements UserDetails {
             if (this.pwdErrCnt != dto.getPwdErrCnt()) {
                 this.pwdErrCnt = dto.getPwdErrCnt();
             }
+            if (this.usrTtl != dto.getUsrTtl()) {
+                this.usrTtl = dto.getUsrTtl();
+            }
             if (this.authorities == null || this.authorities.isEmpty()) {
                 Authorities authorities = new Authorities();
                 List<Authorities> list = new ArrayList<Authorities>();
@@ -203,8 +209,8 @@ public class User implements UserDetails {
                     list.add(authorities);
                 }
             }
-            if (this.enabled != dto.isEnbaled()) {
-                this.enabled = dto.isEnbaled();
+            if (this.enabled != dto.isEnabled()) {
+                this.enabled = dto.isEnabled();
             }
         }
         if (this.usrBth != dto.getUsrBth()) {

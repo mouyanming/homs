@@ -50,8 +50,6 @@ public class UserController {
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public String add(@Valid UserDto user, BindingResult result, final Model model, Principal principal) {
         if (!result.hasErrors()) {
-            // ログインユーザー取得
-            // String updName = (principal != null) ? principal.getName() : "未ログインユーザ";
             User usr = new User();
             usr.convertToUser(user, true);
             userRepository.saveAndFlush(usr);

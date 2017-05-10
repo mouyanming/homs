@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
 
 @Data
@@ -41,14 +42,17 @@ public class UserDto {
 
     private Timestamp crtTm;
 
+    @DateTimeFormat(pattern = "yyyy/MM/dd")
     private Date epDt;
 
     private String jsgKb;
 
+    @DateTimeFormat(pattern = "yyyy/MM/dd")
     private Date lfDt;
 
     private String spUsrId;
 
+    @DateTimeFormat(pattern = "yyyy/MM/dd")
     private Date usrBth;
 
     private String usrMb;
@@ -64,7 +68,7 @@ public class UserDto {
 
     private String usrTtl;
 
-    private boolean enbaled = true;
+    private boolean enabled = true;
 
     public UserDto(User usr) {
         this.userId = usr.getUserId();
@@ -80,6 +84,8 @@ public class UserDto {
         this.usrNm = usr.getUsrNm();
         this.usrSex = usr.getUsrSex();
         this.usrTtl = usr.getUsrTtl();
-        this.enbaled = usr.isEnabled();
+        this.enabled = usr.isEnabled();
+        this.usrMb = usr.getUsrMb();
+        this.usrMl = usr.getUsrMl();
     }
 }

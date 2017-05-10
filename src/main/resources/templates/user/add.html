@@ -38,7 +38,7 @@
                                     <form class="form-horizontal"  th:action="@{/user/add}" method="post"  th:object="${userDto}"  >
                                         <fieldset>
                                             <div class="form-group">
-                                                <label class="col-lg-3 control-label" for="select01"><font class="font-red">※</font>ユーザー名</label>
+                                                <label class="col-lg-3 control-label" for="select01"><font class="font-red">※</font>ユーザーID</label>
                                                 <div class="col-lg-6">
                                                     <input type="text" class="form-control col-md-6" id="userId" name="userId" th:field="*{userId}"  maxlength="50" />
                                                     <p class="color-red" th:if="${#fields.hasErrors('userId')}" th:errors="*{userId}">...</p>
@@ -61,11 +61,115 @@
                                             <div class="form-group">
                                                 <label class="col-lg-3 control-label" for="select01"><font class="font-red">※</font>表示名</label>
                                                 <div class="col-lg-6">
-                                                    <input type="text" class="form-control col-md-6" id="displayName" name="displayName" th:field="*{displayName}" maxlength="15" />
-                                                    <p class="color-red" th:if="${#fields.hasErrors('displayName')}" th:errors="*{displayName}">...</p>
+                                                    <input type="text" class="form-control col-md-6" id="usrNm" name="usrNm" th:field="*{usrNm}" maxlength="15" />
+                                                    <p class="color-red" th:if="${#fields.hasErrors('usrNm')}" th:errors="*{usrNm}">...</p>
                                                 </div>
                                             </div>
-											<div class="form-group">
+                                            <div class="form-group">
+                                                <label class="col-lg-3 control-label" for="select01">誕生日</label>
+                                                <div class="col-lg-6">
+                                                    <input type="text" class="form-control col-md-6　datepicker date-control" id="usrBth" name="usrBth" th:field="*{usrBth}" maxlength="15" />
+                                                    <p class="color-red" th:if="${#fields.hasErrors('usrBth')}" th:errors="*{usrBth}">...</p>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-lg-3 control-label" for="optionsCheckbox"><font class="font-red"></font>性別</label>
+                                                <div class="col-lg-8">
+                                                    <label class="uniform">
+                                                        <input class="uniform_on" type="radio" name="usrSex" id=usrSex checked value="1" th:field="*{usrSex}" > 男性
+                                                    </label>
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                    <label class="uniform">
+                                                        <input class="uniform_on" type="radio" name="usrSex" id="usrSex" value="0" th:field="*{usrSex}"> 女性
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-lg-3 control-label" for="select01">携帯番号</label>
+                                                <div class="col-lg-6">
+                                                    <input type="text" class="form-control col-md-6" id="usrMb" name="usrMb" th:field="*{usrMb}" maxlength="15" />
+                                                    <p class="color-red" th:if="${#fields.hasErrors('usrMb')}" th:errors="*{usrMb}">...</p>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-lg-3 control-label" for="select01">会社Email</label>
+                                                <div class="col-lg-6">
+                                                    <input type="text" class="form-control col-md-6" id="usrMl" name="usrMl" th:field="*{usrMl}" maxlength="50" />
+                                                    <p class="color-red" th:if="${#fields.hasErrors('usrMl')}" th:errors="*{usrMl}">...</p>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-lg-3 control-label" for="select01">役職</label>
+                                                <div class="col-lg-6">
+                                                    <select id="usrTtl" th:field="*{usrTtl}" class="chzn-select form-control col-md-6">
+                                                        <option value="">未選択</option>
+                                                        <option value="PM">PM</option>
+                                                        <option value="SE">SE</option>
+                                                        <option value="PG">PG</option>
+                                                        <option value="SPM">SPM</option>
+                                                        <option value="DM">DM</option>
+                                                        <option value="CTO">CTO</option>
+                                                        <option value="CEO">社長</option>
+                                                    </select>
+                                                    <p class="color-red" th:if="${#fields.hasErrors('usrTtl')}" th:errors="*{usrTtl}">...</p>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-lg-3 control-label" for="select01">上位管理者</label>
+                                                <div class="col-lg-6">
+                                                    <input type="text" class="form-control col-md-6" id="spUsrId" name="spUsrId" th:field="*{spUsrId}" maxlength="15" />
+                                                    <p class="color-red" th:if="${#fields.hasErrors('spUsrId')}" th:errors="*{spUsrId}">...</p>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-lg-3 control-label" for="select01">所属区分</label>
+                                                <div class="col-lg-6">
+                                                    <select id="jsgKb" th:field="*{jsgKb}" class="chzn-select form-control col-md-6">
+                                                        <option value="">未選択</option>
+                                                        <option value="J">日本海隆</option>
+                                                        <option value="S">上海</option>
+                                                        <option value="G">外注</option>
+                                                    </select>
+                                                    <p class="color-red" th:if="${#fields.hasErrors('jsgKb')}" th:errors="*{jsgKb}">...</p>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="col-lg-3 control-label" for="select01">入社日</label>
+                                                <div class="col-lg-6">
+                                                    <input type="text" class="form-control col-md-6　datepicker date-control" id="epDt" name="epDt" th:field="*{epDt}" maxlength="15" /><font class="font-red">※日本海隆のみ</font>
+                                                    <p class="color-red" th:if="${#fields.hasErrors('epDt')}" th:errors="*{epDt}">...</p>
+                                                </div>
+                                            </div>
+
+                                             <div class="form-group">
+                                                <label class="col-lg-3 control-label" for="select01">離職日</label>
+                                                <div class="col-lg-6">
+                                                    <input type="text" class="form-control col-md-6　datepicker date-control" id="lfDt" name="lfDt" th:field="*{lfDt}" maxlength="15" /><font class="font-red">※日本海隆のみ</font>
+                                                    <p class="color-red" th:if="${#fields.hasErrors('lfDt')}" th:errors="*{lfDt}">...</p>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="col-lg-3 control-label" for="select01">アカウント状態</label>
+                                                <div class="col-lg-6">
+                                                    <select id="acSts" class="chzn-select form-control col-md-6">
+                                                        <option value="0">正常</option>
+                                                        <option value="1">ロック</option>
+                                                        <option value="9">離職</option>
+                                                    </select>
+                                                    <p class="color-red" th:if="${#fields.hasErrors('acSts')}" th:errors="*{acSts}">...</p>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="col-lg-3 control-label" for="select01">パスワード入力エラー回数</label>
+                                                <div class="col-lg-6">
+                                                    <input type="text" class="form-control col-md-6" id="pwdErrCnt" name="pwdErrCnt" th:field="*{pwdErrCnt}" maxlength="1" />
+                                                    <p class="color-red" th:if="${#fields.hasErrors('pwdErrCnt')}" th:errors="*{pwdErrCnt}">...</p>
+                                                </div>
+                                            </div>
+                                            <div class="form-group" sec:authorize="hasRole('ROLE_ADMIN')">
                                                 <label class="col-lg-3 control-label" for="optionsCheckbox"><font class="font-red">※</font>権限</label>
                                                 <div class="col-lg-8">
                                                     <label class="uniform">
@@ -85,6 +189,7 @@
                                                     </label>
                                                 </div>
                                             </div>
+
                                             <hr/>
                                             <div align="right">
                                                 <button type="submit" class="btn btn-primary">　　登　録　　</button>　　　

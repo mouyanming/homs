@@ -61,30 +61,64 @@
                                             <div class="form-group">
                                                 <label class="col-lg-3 control-label" for="select01"><font class="font-red">※</font>表示名</label>
                                                 <div class="col-lg-6">
-                                                    <input type="text" class="form-control col-md-6" id="usrNm" name="usrNm" th:field="*{usrNm}" maxlength="15" />
+                                                    <input type="text" class="form-control col-md-6" id="usrNm" name="usrNm" th:field="*{usrNm}" maxlength="15" readonly="readonly"/>
                                                     <p class="color-red" th:if="${#fields.hasErrors('usrNm')}" th:errors="*{usrNm}">...</p>
                                                 </div>
                                             </div>
-											<div class="form-group">
-                                                <label class="col-lg-3 control-label" for="optionsCheckbox"><font class="font-red">※</font>権限</label>
+                                            <div class="form-group">
+                                                <label class="col-lg-3 control-label" for="select01">誕生日</label>
+                                                <div class="col-lg-6">
+                                                    <input type="text" class="form-control col-md-6　datepicker date-control" id="usrBth" name="usrBth" th:field="*{usrBth}" maxlength="15" />
+                                                    <p class="color-red" th:if="${#fields.hasErrors('usrBth')}" th:errors="*{usrBth}">...</p>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-lg-3 control-label" for="select01">携帯番号</label>
+                                                <div class="col-lg-6">
+                                                    <input type="text" class="form-control col-md-6" id="usrMb" name="usrMb" th:field="*{usrMb}" maxlength="15" />
+                                                    <p class="color-red" th:if="${#fields.hasErrors('usrMb')}" th:errors="*{usrMb}">...</p>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-lg-3 control-label" for="select01">会社Email</label>
+                                                <div class="col-lg-6">
+                                                    <input type="text" class="form-control col-md-6" id="usrMl" name="usrMl" th:field="*{usrMl}" maxlength="50" />
+                                                    <p class="color-red" th:if="${#fields.hasErrors('usrMl')}" th:errors="*{usrMl}">...</p>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-lg-3 control-label" for="optionsCheckbox"><font class="font-red"></font>性別</label>
                                                 <div class="col-lg-8">
                                                     <label class="uniform">
-                                                        <input class="uniform_on" type="radio" name="authorities" id=authorities checked value="ROLE_JIMU" th:field="*{authorities}" > 事務処理権限
+                                                        <input class="uniform_on" type="radio" name="usrSex" id=usrSex checked value="1" th:field="*{usrSex}" readonly="readonly"> 男性
                                                     </label>
                                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                                     <label class="uniform">
-                                                        <input class="uniform_on" type="radio" name="authorities" id="authorities" value="ROLE_NORMAL_USER" th:field="*{authorities}"> 一般ユーザ
-                                                    </label>
-                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                    <label class="uniform">
-                                                        <input class="uniform_on" type="radio" name="authorities" id="authorities" value="ROLE_MANAGER" th:field="*{authorities}"> 上位管理者権限
-                                                    </label>
-                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                    <label class="uniform">
-                                                        <input class="uniform_on" type="radio" name="authorities" id="authorities" value="ROLE_ADMIN" th:field="*{authorities}" > システムユーザ
+                                                        <input class="uniform_on" type="radio" name="usrSex" id="usrSex" value="0" th:field="*{usrSex}" readonly="readonly"> 女性
                                                     </label>
                                                 </div>
                                             </div>
+                                            <div class="form-group">
+                                                <label class="col-lg-3 control-label" for="select01">所属区分</label>
+                                                <div class="col-lg-6">
+                                                    <select id="jsgKb" th:field="*{jsgKb}" class="chzn-select form-control col-md-6" disabled>
+                                                        <option value="">未選択</option>
+                                                        <option value="J" >日本海隆</option>
+                                                        <option value="S">上海</option>
+                                                        <option value="G">外注</option>
+                                                    </select>
+                                                    <p class="color-red" th:if="${#fields.hasErrors('jsgKb')}" th:errors="*{jsgKb}">...</p>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="col-lg-3 control-label" for="select01">入社日</label>
+                                                <div class="col-lg-6">
+                                                    <input type="text" class="form-control col-md-6　datepicker date-control" id="epDt" name="epDt" th:field="*{epDt}" maxlength="15" readonly="readonly"/><font class="font-red">※日本海隆のみ</font>
+                                                    <p class="color-red" th:if="${#fields.hasErrors('epDt')}" th:errors="*{epDt}">...</p>
+                                                </div>
+                                            </div>
+
                                             <hr/>
                                             <div align="right">
                                                 <button type="submit" class="btn btn-primary" >　　更　新　　</button>
