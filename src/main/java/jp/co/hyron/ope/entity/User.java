@@ -6,17 +6,13 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import jp.co.hyron.ope.dto.UserDto;
-import jp.co.hyron.ope.entity.type.AuthoritiesId;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -47,8 +43,8 @@ public class User implements UserDetails {
     @Column(name = "password")
     protected String password;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    protected List<Authorities> authorities;
+    @Column(name = "authorities")
+    protected String authorities;
 
     @Column(name = "ac_sts")
     private int acSts;
@@ -98,7 +94,7 @@ public class User implements UserDetails {
     @Column(name = "enabled")
     private boolean enabled = true;
 
-    public User(String userId, String password, String displayName, boolean enabled, List<Authorities> authorities) {
+    public User(String userId, String password, String displayName, boolean enabled, String authorities) {
         this.userId = userId;
         this.password = password;
         this.enabled = enabled;
@@ -126,9 +122,7 @@ public class User implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> return_list = new ArrayList<GrantedAuthority>();
-        for (Authorities auth : this.authorities) {
-            return_list.add(new SimpleGrantedAuthority(auth.getId().getAuthority()));
-        }
+        return_list.add(new SimpleGrantedAuthority(this.authorities));
         return return_list;
     }
 
@@ -195,19 +189,8 @@ public class User implements UserDetails {
             if (this.usrTtl != dto.getUsrTtl()) {
                 this.usrTtl = dto.getUsrTtl();
             }
-            if (this.authorities == null || this.authorities.isEmpty()) {
-                Authorities authorities = new Authorities();
-                List<Authorities> list = new ArrayList<Authorities>();
-                authorities.setId(new AuthoritiesId(dto.getUserId(), dto.getAuthorities()));
-                list.add(authorities);
-                this.authorities = list;
-            } else {
-                Authorities authorities = this.authorities.get(0);
-                if (authorities.getId().getAuthority() != dto.getAuthorities()) {
-                    List<Authorities> list = new ArrayList<Authorities>();
-                    authorities.setId(new AuthoritiesId(dto.getUserId(), dto.getAuthorities()));
-                    list.add(authorities);
-                }
+            if (this.authorities != dto.getAuthorities()) {
+                this.authorities = dto.getAuthorities();
             }
             if (this.enabled != dto.isEnabled()) {
                 this.enabled = dto.isEnabled();
@@ -224,15 +207,6 @@ public class User implements UserDetails {
     }
 
     public boolean isRoleUser(String role) {
-        if (this.authorities == null) {
-            return false;
-        } else if (this.authorities.isEmpty()) {
-            return false;
-        } else if (this.authorities.get(0).getId().getAuthority() != role) {
-            return false;
-        } else {
-            return true;
-        }
-
+        return this.authorities == role;
     }
 }

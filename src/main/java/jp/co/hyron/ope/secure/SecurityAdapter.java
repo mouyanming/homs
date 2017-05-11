@@ -1,13 +1,8 @@
 package jp.co.hyron.ope.secure;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.sql.DataSource;
 
-import jp.co.hyron.ope.entity.Authorities;
 import jp.co.hyron.ope.entity.User;
-import jp.co.hyron.ope.entity.type.AuthoritiesId;
 import jp.co.hyron.ope.service.JdbcUserDetailsServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,11 +59,7 @@ public class SecurityAdapter extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(userDetailsService).passwordEncoder(encoder);
         // 管理者がないの場合、管理者を追加する
         if (!userDetailsService.userExists("admin")) {
-            List<Authorities> authorities = new ArrayList<Authorities>();
-            Authorities a = new Authorities();
-            a.setId(new AuthoritiesId("admin", "ROLE_ADMIN"));
-            authorities.add(a);
-            User user = new User("admin", encoder.encode("admin"), "管理者", true, authorities);
+            User user = new User("admin", encoder.encode("admin"), "管理者", true, "ROLE_ADMIN");
             userDetailsService.createUser(user);
         }
     }
