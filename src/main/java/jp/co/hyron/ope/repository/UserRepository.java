@@ -9,11 +9,12 @@ import org.springframework.stereotype.Repository;
  * @author li_x
  */
 @Repository
-public interface UserRepository extends JpaRepository<User, Integer> {
+public interface UserRepository extends JpaRepository<User, String> {
 
     /**
      * @param userId
      * @return
      */
     public User findByUserId(String userId);
+
 }
