@@ -34,7 +34,7 @@ public class UserController {
     public static final String DEF_AUTHOR_ROLE_NORMAL_USER = "ROLE_NORMAL_USER";
 
     // 事務処理権限
-    public static final String DEF_AUTHOR_ROLE_READONLY = "ROLE_JIMU";
+    public static final String DEF_AUTHOR_ROLE_JIMU = "ROLE_JIMU";
 
     @Autowired
     private UserRepository userRepository;
@@ -118,7 +118,7 @@ public class UserController {
             User usr = userRepository.findByUserId(user.getUserId());
             usr.convertToUser(user, true);
             userRepository.saveAndFlush(usr);
-            return "redirect:/";
+            return "redirect:/user/users";
         } else {
             return "/user/update";
         }
