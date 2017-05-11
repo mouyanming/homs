@@ -18,6 +18,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -122,6 +123,18 @@ public class UserController {
         } else {
             return "/user/update";
         }
+    }
+
+    @Secured({DEF_AUTHOR_ROLE_ADMIN })
+    @RequestMapping(value = {"/delete/{id}" }, method = RequestMethod.GET)
+    @ResponseBody
+    public String delete(@PathVariable("id") String id) {
+        try {
+            userRepository.delete(id);
+        } catch (Exception e) {
+            return "NG";
+        }
+        return "OK";
     }
 
     @RequestMapping("/flot.html")
