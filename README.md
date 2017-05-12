@@ -10,26 +10,30 @@
 **必須インストールソフト**
 下記ソフトウエアをローカルPCにインストールしてください。
 > **Java SE Development Kit 8**
->  http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
->
->  JDKをインストールしたら、環境変数の設定が必要だ。環境変数とはOSが使用する共通の変数のことで、
->  環境変数にJDKに関する設定を行うことでJavaが正しく動作する。
->  設定する環境変数は「Path」と「JAVA_HOME」の2種類だ。（設定方法省略）
+> http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
+> JDKをインストールしたら、環境変数の設定が必要だ。環境変数とはOSが使用する共通の変数のことで、
+> 環境変数にJDKに関する設定を行うことでJavaが正しく動作する。
+> 設定する環境変数は「Path」と「JAVA_HOME」の2種類だ。（設定方法省略）
 
 > **Maven 3**
+
 > https://maven.apache.org/download.cgi
 > 環境変数は「Path」と「MVN_HOME」の2種類だ。（設定方法省略）
 
 > **Git**
+
 > https://git-for-windows.github.io/
 
 > **SourceTree**
+
 > https://ja.atlassian.com/software/sourcetree
 
 > **Eclipse Luna**
+
 > https://eclipse.org/downloads/packages/eclipse-ide-java-ee-developers/lunasr2
 
 > ***plugin***
+
 > Eclipse->Help->Eclipse Maketplace
 > 1. Spring Tool Suite
 
