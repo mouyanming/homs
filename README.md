@@ -49,8 +49,8 @@
 2. コマンドライン
    1. CMD起動
    2. cd ソースファイルパス
-   3.下記コマンド実行
-     `mvn spring-boot:run`
+   3. 下記コマンド実行
+      `mvn spring-boot:run`
 
 
 
