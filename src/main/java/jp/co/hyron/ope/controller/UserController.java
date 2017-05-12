@@ -18,6 +18,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -34,7 +35,7 @@ public class UserController {
     public static final String DEF_AUTHOR_ROLE_NORMAL_USER = "ROLE_NORMAL_USER";
 
     // 事務処理権限
-    public static final String DEF_AUTHOR_ROLE_READONLY = "ROLE_JIMU";
+    public static final String DEF_AUTHOR_ROLE_JIMU = "ROLE_JIMU";
 
     @Autowired
     private UserRepository userRepository;
@@ -118,10 +119,22 @@ public class UserController {
             User usr = userRepository.findByUserId(user.getUserId());
             usr.convertToUser(user, true);
             userRepository.saveAndFlush(usr);
-            return "redirect:/";
+            return "redirect:/user/users";
         } else {
             return "/user/update";
         }
+    }
+
+    @Secured({DEF_AUTHOR_ROLE_ADMIN })
+    @RequestMapping(value = {"/delete/{id}" }, method = RequestMethod.GET)
+    @ResponseBody
+    public String delete(@PathVariable("id") String id) {
+        try {
+            userRepository.delete(id);
+        } catch (Exception e) {
+            return "NG";
+        }
+        return "OK";
     }
 
     @RequestMapping("/flot.html")
