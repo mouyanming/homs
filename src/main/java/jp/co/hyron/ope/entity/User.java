@@ -94,11 +94,12 @@ public class User implements UserDetails {
     @Column(name = "enabled")
     private boolean enabled = true;
 
-    public User(String userId, String password, String displayName, boolean enabled, String authorities) {
+    public User(String userId, String password, String usrNm, boolean enabled, String authorities) {
         this.userId = userId;
         this.password = password;
         this.enabled = enabled;
         this.authorities = authorities;
+        this.usrNm = usrNm;
     }
 
     /*
