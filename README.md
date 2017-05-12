@@ -15,6 +15,7 @@
 >  JDKをインストールしたら、環境変数の設定が必要だ。環境変数とはOSが使用する共通の変数のことで、
 >  環境変数にJDKに関する設定を行うことでJavaが正しく動作する。
 >  設定する環境変数は「Path」と「JAVA_HOME」の2種類だ。（設定方法省略）
+
 > **Maven 3**
 > https://maven.apache.org/download.cgi
 > 環境変数は「Path」と「MVN_HOME」の2種類だ。（設定方法省略）
@@ -43,13 +44,13 @@
 
 #### プロジェクト起動
 1. Eclipse
-  1.1. homsを右クリックして
-  1.2. Run As->Spring Boot App
+   1. homsを右クリックして
+   2. Run As->Spring Boot App
 2. コマンドライン
-  1.1. CMD起動
-  1.2. cd ソースファイルパス
-  1.3.下記コマンド実行
-  `mvn spring-boot:run`
+   1. CMD起動
+   2. cd ソースファイルパス
+   3.下記コマンド実行
+     `mvn spring-boot:run`
 
 
 
