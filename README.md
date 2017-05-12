@@ -7,8 +7,8 @@
 本項目では、ハイロン内部で開発環境を構築する方法を記載します。
 
 #### 開発環境セットアップ
-**必須インストールソフト**
- 下記ソフトウエアをローカルPCにインストールしてください。
+**必須インストールソフト**  
+ 下記ソフトウエアをローカルPCにインストールしてください。  
 > **Java SE Development Kit 8**  
 >  http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
 >
