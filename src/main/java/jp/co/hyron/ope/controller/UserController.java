@@ -5,11 +5,6 @@ import java.security.Principal;
 
 import javax.validation.Valid;
 
-import jp.co.hyron.ope.common.CommonConst;
-import jp.co.hyron.ope.dto.UserDto;
-import jp.co.hyron.ope.entity.User;
-import jp.co.hyron.ope.repository.UserRepository;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -21,6 +16,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
+import jp.co.hyron.ope.common.CommonConst;
+import jp.co.hyron.ope.dto.UserDto;
+import jp.co.hyron.ope.entity.Login;
+import jp.co.hyron.ope.entity.User;
+import jp.co.hyron.ope.repository.UserRepository;
 
 @Controller
 @RequestMapping("/user")
@@ -55,16 +56,15 @@ public class UserController {
     public ModelAndView add(final Model model) {
         UserDto user = new UserDto();
         // 新規画面で「運用閲覧ユーザ」の権限をデフォルト指定
-        user.setAuthorities(CommonConst.DEF_AUTHOR_ROLE_NORMAL_USER);
         model.addAttribute("userDto", user);
         return new ModelAndView("user/add");
     }
 
     @RequestMapping(value = {"/edit/{id}" }, method = RequestMethod.GET)
-    public ModelAndView edit(@PathVariable("id") String id, final Model model, @AuthenticationPrincipal User loginUser) {
+    public ModelAndView edit(@PathVariable("id") String id, final Model model, @AuthenticationPrincipal Login loginUser) {
         if (loginUser != null && (loginUser.getUserId().equals(id) || loginUser.isRoleUser(CommonConst.DEF_AUTHOR_ROLE_ADMIN))) {
             if (null != id && !"".equals(id)) {
-                UserDto usr = new UserDto(userRepository.findByUserId(id));
+                UserDto usr = new UserDto(userRepository.findOne(id));
                 model.addAttribute("userDto", usr);
             } else {
                 throw new AccessControlException("403 returned");
@@ -74,10 +74,10 @@ public class UserController {
     }
 
     @RequestMapping(value = {"/edit" }, method = RequestMethod.POST)
-    public String edit(@Valid UserDto user, BindingResult result, final Model model, @AuthenticationPrincipal User loginUser) {
+    public String edit(@Valid UserDto user, BindingResult result, final Model model, @AuthenticationPrincipal Login loginUser) {
         if (!result.hasErrors()) {
             if (loginUser != null && (loginUser.getUserId().equals(user.getUserId()) || loginUser.isRoleUser(CommonConst.DEF_AUTHOR_ROLE_ADMIN))) {
-                User usr = userRepository.findByUserId(user.getUserId());
+                User usr = userRepository.findOne(user.getUserId());
                 usr.convertToUser(user, true);
                 userRepository.saveAndFlush(usr);
             } else {
@@ -93,7 +93,7 @@ public class UserController {
     @RequestMapping(value = {"/update/{id}" }, method = RequestMethod.GET)
     public ModelAndView update(@PathVariable("id") String id, final Model model) {
         if (null != id && !"".equals(id)) {
-            UserDto usr = new UserDto(userRepository.findByUserId(id));
+            UserDto usr = new UserDto(userRepository.findOne(id));
             model.addAttribute("userDto", usr);
         }
         return new ModelAndView("user/update");
@@ -105,7 +105,7 @@ public class UserController {
         if (!result.hasErrors()) {
             // ログインユーザー取得
             // String updName = (principal != null) ? principal.getName() : "未ログインユーザ";
-            User usr = userRepository.findByUserId(user.getUserId());
+            User usr = userRepository.findOne(user.getUserId());
             usr.convertToUser(user, true);
             userRepository.saveAndFlush(usr);
             return "redirect:/user/users";

@@ -1,13 +1,13 @@
 package jp.co.hyron.ope.service;
 
-import jp.co.hyron.ope.entity.User;
-import jp.co.hyron.ope.repository.UserRepository;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
+
+import jp.co.hyron.ope.entity.Login;
+import jp.co.hyron.ope.repository.LoginRepository;
 
 /**
  * DBを参照してユーザ情報を提供します。
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 public class JdbcUserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
-    private UserRepository userRepository;
+    private LoginRepository loginRepository;
 
     /*
      * (非 Javadoc)
@@ -28,7 +28,7 @@ public class JdbcUserDetailsServiceImpl implements UserDetailsService {
             throw new UsernameNotFoundException("username is empty");
         }
 
-        User foundUser = userRepository.findByUserId(username);
+        Login foundUser = loginRepository.findByUserId(username);
         if (foundUser != null) {
             return foundUser;
         }
@@ -44,7 +44,7 @@ public class JdbcUserDetailsServiceImpl implements UserDetailsService {
         return true;
     }
 
-    public void createUser(User user) {
-        userRepository.saveAndFlush(user);
+    public void createUser(Login user) {
+        loginRepository.saveAndFlush(user);
     }
 }

@@ -1,14 +1,16 @@
 package jp.co.hyron.ope.repository;
 
-import jp.co.hyron.ope.entity.User;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+
+import jp.co.hyron.ope.entity.Login;
 
 /**
  * @author li_x
  */
 @Repository
-public interface UserRepository extends JpaRepository<User, String> {
+public interface LoginRepository extends JpaRepository<Login, Long> {
+
+    public Login findByUserId(String userId);
 
 }

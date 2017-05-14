@@ -9,7 +9,7 @@ spring:
     driverClassName: org.h2.Driver
 
   jpa:
-    hibernate.ddl-auto: none
+    hibernate.ddl-auto: create-drop
     database-platform: org.hibernate.dialect.H2Dialect
   thymeleaf:
     mode: LEGACYHTML5

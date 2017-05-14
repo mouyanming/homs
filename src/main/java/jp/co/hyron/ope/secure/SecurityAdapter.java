@@ -2,9 +2,6 @@ package jp.co.hyron.ope.secure;
 
 import javax.sql.DataSource;
 
-import jp.co.hyron.ope.entity.User;
-import jp.co.hyron.ope.service.JdbcUserDetailsServiceImpl;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
@@ -20,6 +17,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+
+import jp.co.hyron.ope.entity.Login;
+import jp.co.hyron.ope.service.JdbcUserDetailsServiceImpl;
 
 @Configuration
 @Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
@@ -44,7 +44,7 @@ public class SecurityAdapter extends WebSecurityConfigurerAdapter {
         // .and().formLogin()
         // .loginPage("/login").failureUrl("/login?error").permitAll().and().logout().permitAll();
         http.authorizeRequests().antMatchers("/admin/css/**").permitAll().antMatchers("/admin/js/**").permitAll().antMatchers("/admin/bower_components/**").permitAll().anyRequest().authenticated()
-                .and().formLogin().loginPage("/login").usernameParameter("userid").passwordParameter("password").defaultSuccessUrl("/index.html").failureUrl("/login?error").permitAll().and().logout()
+                .and().formLogin().loginPage("/login").usernameParameter("loginId").passwordParameter("password").defaultSuccessUrl("/index.html").failureUrl("/login?error").permitAll().and().logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login?logout").deleteCookies("JSESSIONID").invalidateHttpSession(true).permitAll().and().rememberMe()
                 .tokenRepository(jdbcTokenRepository()).tokenValiditySeconds(604800);// remember for a week. ( 1 * 60 * 60 * 24 * 7 ) sec
         http.authorizeRequests().antMatchers("/console/**").permitAll();
@@ -59,7 +59,7 @@ public class SecurityAdapter extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(userDetailsService).passwordEncoder(encoder);
         // 管理者がないの場合、管理者を追加する
         if (!userDetailsService.userExists("admin")) {
-            User user = new User("admin", encoder.encode("admin"), "管理者", true, "ROLE_ADMIN");
+            Login user = new Login("admin", encoder.encode("admin"), "管理者", true, "ROLE_ADMIN");
             userDetailsService.createUser(user);
         }
     }
