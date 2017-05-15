@@ -6,7 +6,7 @@ import java.util.Date;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import jp.co.hyron.ope.entity.User;
+import jp.co.hyron.ope.entity.UserMst;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -45,7 +45,7 @@ public class UserDto {
 
     private String usrTtl;
 
-    public UserDto(User usr) {
+    public UserDto(UserMst usr) {
         this.userId = usr.getId();
         this.crtTm = usr.getCrtTm();
         this.epDt = usr.getEpDt();

@@ -58,7 +58,7 @@
                                             <th>所属区分</th>
                                             <!-- <th>入社日付</th> -->
                                             <!--<th>離職日付</th> -->
-                                            <th>アカウント状態</th>
+                                            <!--<th>アカウント状態</th>-->
                                             <!-- <th>パスワード入力エラー回数</th>-->
                                             <!-- <th>最新更新日</th> -->
                                             <!-- <th>作成日</th> -->
@@ -67,7 +67,7 @@
                                     </thead>
                                     <tbody>
                                         <tr th:each="result : ${users}" class="odd gradeX">
-                                            <td><a th:href="'/user/update/' + ${result.userId}" th:text="${result.userId}"></a></td>
+                                            <td><a th:href="'/user/update/' + ${result.id}" th:text="${result.id}"></a></td>
                                             <td th:text="${result.usrNm}">...</td>
                                             <td th:text="${result.usrBth}">...</td>
                                             <td th:text="${result.usrSex == 1 ? '男性' : '女性'}"></td>
@@ -81,16 +81,18 @@
                                             </td>
                                             <!-- <td th:text="${result.epDt}"></td>-->
                                             <!-- <td th:text="${result.lfDt}"></td>-->
+                                            <!--
                                             <td th:switch="${result.acSts}">
                                               <p th:case="0">正常</p>
 											  <p th:case="1">ロック</p>
 											  <p th:case="9">離職</p>
                                             </td>
+                                            -->
                                             <!-- <td th:text="${result.pwdErrCnt}"></td>-->
                                             <!-- <td th:text="${result.updTm}"></td>-->
                                             <!-- <td th:text="${result.crtTm}"></td>-->
                                             <td class="center link_no_underline">
-											<button class="btn btn-xs btn-danger delete" th:id="${result.userId}">
+											<button class="btn btn-xs btn-danger delete" th:id="${result.id}">
 												<i class="glyphicon glyphicon-trash"></i> Delete
 											</button></td>
                                         </tr>

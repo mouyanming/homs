@@ -8,7 +8,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -18,6 +17,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import org.springframework.security.core.userdetails.User;
+
 /**
  * 本システム用 のユーザ情報
  */
@@ -25,18 +26,17 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "user")
-public class User implements Serializable {
+@Table(name = "userMst")
+public class UserMst implements Serializable {
 
-	private static final long serialVersionUID = -7254273334291876188L;
+    private static final long serialVersionUID = -7254273334291876188L;
 
-	@Id
-	@Column(name = "id")
-	protected String id;
-    
-    @OneToOne
-    @JoinColumn(name="user_id")
-    private Login login;
+    @Id
+    @Column(name = "id")
+    protected String id;
+
+    @JoinColumn(name = "username")
+    private User user;
 
     @Column(name = "crt_tm", nullable = false)
     private Timestamp crtTm;
@@ -77,6 +77,15 @@ public class User implements Serializable {
     @Column(name = "usr_ttl", length = 20)
     private String usrTtl;
 
+    @Column(name = "vd_cd", unique = true, length = 64)
+    private String vdCd;
+
+    @Column(name = "ac_sts")
+    private short acSts;
+
+    @Column(name = "pwd_err_cnt")
+    private short pwdErrCnt;
+
     public void convertToUser(UserDto dto, boolean isAdmin) {
         // 自分更新不可の項目
         if (isAdmin) {
@@ -113,8 +122,8 @@ public class User implements Serializable {
         }
         this.updTm = new Timestamp(System.currentTimeMillis());
     }
-    
-    public User(String usrId){
-    	this.id = usrId;
+
+    public UserMst(String usrId) {
+        this.id = usrId;
     }
 }

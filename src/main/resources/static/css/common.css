@@ -164,3 +164,74 @@
 .padding-5 {
     padding: 5px;
 }
+.fnt10 {
+	font-size: 10px;
+}
+.mod-step {
+  display: table;
+  table-layout: fixed;
+  margin: 20px auto;
+  padding-right: 15px;
+}
+.mod-step li {
+  display: table-cell;
+  padding: 0 6px;
+  width: 155px;
+}
+.mod-step li span {
+  display: block;
+  text-align: center;
+  position: relative;
+  background: #d4d4d4;
+  height: 45px;
+  line-height: 45px;
+  box-sizing: border-box;
+  color: #fff;
+  padding-left: 16px;
+}
+.mod-step li span:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 0;
+  width: 0;
+  border: 23px solid transparent;
+  border-left: 17px solid #fff;
+}
+.mod-step li span:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: -40px;
+  height: 0;
+  width: 0;
+  border: 23px solid transparent;
+  border-left: 17px solid #d4d4d4;
+  z-index: 1;
+}
+.mod-step li.on span {
+  background: #cc9900;
+}
+.mod-step li.on span:after {
+  border-left-color: #cc9900;
+}
+ul.mylist{
+list-style: none;
+}
+
+/**** "mylist" ‚Ì’†‚Ì <li> ****/
+ul.mylist li{
+line-height: 16px; /* ‰æ‘œ‚‚³‚Æ“¯‚¶‘å‚«‚³ */
+font-size: 16px;
+}
+
+/**** "mylist" ‚Ì’†‚Ì <img> ****/
+ul.mylist i{
+width: 32px;
+height: 32px;
+vertical-align: top;
+}
+ul.mylist p{
+	display:inline-block;
+}
