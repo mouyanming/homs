@@ -4,6 +4,8 @@
   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
   layout:decorator="adminContentOnly">
 <head>
+ <!-- Datepicker CSS -->
+    <link th:href="@{/vendors/bootstrap-datepicker/css/datepicker.css}" href="/vendors/bootstrap-datepicker/css/datepicker.css" rel="stylesheet" media="screen" >
 </head>
 <body>
   <div layout:fragment="content">
@@ -26,11 +28,10 @@
                         <form role="form" method="post" th:action="@{/account/sendmail}" th:object="${account}">
                             <fieldset>
                                 <div class="section-inner">
-					                <p id="registErrDiv" class="txt-alert form-error"></p>
 								    <ul class="mylist">
 									<li><i class="fa fa-envelope-o fa-fw"></i><p><span class="media__heading" th:text="*{id}"></span><br>
 									        <span class="fnt10 text-normal">※メールアドレスはログイン時に使用します。</span></p>
-									        <input id="email" name="email" type="hidden" value="gyomei70@gmail.com">
+									        <input id="email" name="email" type="hidden" th:value="*{id}">
 									</li>
 									<hr class="border-b-1 ex-mt-10 ex-mb-10">
 									<li><i class="fa fa-key fa-fw"></i>
@@ -39,67 +40,39 @@
 									        <span class="fnt10 form-appendix">※半角英数字8文字以上18文字以内。半角英字、半角数字の両方を使用してください。</span>
 									        </p>
 									</li>
-									</ul>
-					                <div class="media">
-									    <div class="media__image">
-									        <i class="fa fa-envelope-o fa-fw"></i>
-									    </div>
-									    <div class="media__summary">
-									        <p class="media__heading" th:text="*{id}"></p>
-									        <span class="fnt10 text-normal">※メールアドレスはログイン時に使用します。</span>
-									        <input id="email" name="email" type="hidden" value="gyomei70@gmail.com">
-									    </div>
-									</div>
-					                <hr class="border-b-1 ex-mt-10 ex-mb-10">
-					                <div class="">
-					                    <p id="passwordErrDiv" class="txt-alert form-error"></p>
-					                    <div class="js-toggle-pass-wrapper">
-					                        <input type="password" name="newPass" class="form-text ex-mb-5 js-toggle-pass-mask" placeholder="パスワード" maxlength="30" id="newPassTextMask" style="display:none;">
-					                        <input type="text" name="newPassText" class="form-text ex-mb-5 js-toggle-pass" placeholder="パスワード" maxlength="30" id="newPassText"><br>
-					                        <input type="checkbox" class="form-checkbox js-toggle-pass-check checked" id="new-pass-appear"><label for="new-pass-appear" class="fnt12">パスワードを表示する</label>
-					                        <span class="form-appendix">※半角英数字8文字以上18文字以内。半角英字、半角数字の両方を使用してください。</span>
-					                        <input id="password" name="password" type="hidden" value="">
-					                    </div>
-					                </div>
-					                <hr class="border-b-1 ex-mt-10 ex-mb-10">
-					                <div class="mti-icon-gender">
-
-					                    <p id="sexErrDiv" class="txt-alert form-error"></p>
-					                    <ul class="gender">
-					                        <li>
-					                            <input type="radio" class="form-radio" value="0" name="sex" id="man">
+									<hr class="border-b-1 ex-mt-10 ex-mb-10">
+									<li><i class="fa fa-smile-o fa-fw"></i>
+									        <p>
+									        <input type="text" name="name" class="form-text ex-mb-5 js-toggle-pass-mask" placeholder="名前" maxlength="30" id="newPassTextMask">
+									        </p>
+									</li>
+									<hr class="border-b-1 ex-mt-10 ex-mb-10">
+									<li><i class="fa fa-mobile fa-fw"></i>
+									        <p>
+									        <input type="text" name="tmobile" class="form-text ex-mb-5" placeholder="携帯電話" maxlength="30" id="newPassTextMask"><br>
+									        <span class="fnt10 form-appendix">※半角数字のみ</span>
+									        </p>
+									</li>
+									<hr class="border-b-1 ex-mt-10 ex-mb-10">
+									
+									<li><i class="fa fa-user fa-fw"></i>
+									        
+					                            <input type="radio" class="form-radio" name="usrSex" id=usrSex checked value="2" th:field="*{usrSex}" >
 					                            <label for="man"><span class="text">男性</span></label>
-					                        </li>
-					                        <li>
-					                            <input type="radio" class="form-radio" value="1" name="sex" id="woman">
+					                       
+					                            <input type="radio" class="form-radio" name="usrSex" id=usrSex value="1" th:field="*{usrSex}" >
 					                            <label for="woman"><span class="text">女性</span></label>
-					                        </li>
-					                    </ul>
-					                </div>
-					                <hr class="border-b-1 ex-mt-10 ex-mb-10">
-					                <div class="mti-icon-present">
-
-					                    <p id="birthdayErrDiv" class="txt-alert form-error"></p>
-					                    <div class="birth">
-					                        <input type="text" name="birthdayYear" size="4" maxlength="4" class="form-text js-move-input" placeholder="生年月日" id="birthdayYear" value="">
-					                        年
-					                        <input type="text" name="birthdayMonth" size="2" maxlength="2" class="form-text js-move-input" placeholder="01" id="birthdayMonth" value="">
-					                        月
-					                        <input type="text" name="birthdayDay" size="2" maxlength="2" class="form-text js-move-input" placeholder="01" id="birthdayDay" value="">
-					                        日<br>
-					                        <span class="form-appendix ">※半角数字　例：1980年05月01日</span>
+									</li>
+									<hr class="border-b-1 ex-mt-10 ex-mb-10">
+									<li><i class="fa fa-calendar fa-fw"></i>
+									<p>					                    
+					                       <input type="text" class="form-text ex-mb-5　datepicker date-control" id="usrBth" name="usrBth" placeholder="生年月日" th:field="*{usrBth}" maxlength="15" /><br>
+					                       <span class="fnt10 form-appendix ">※半角数字　例：19800501</span>
+					                       <p class="color-red" th:if="${#fields.hasErrors('usrBth')}" th:errors="*{usrBth}">...</p>
+					                 </p>
 					                        <input id="birthDay" name="birthDay" type="hidden" value="">
-					                    </div>
-					                </div>
-					                <hr class="border-b-1 ex-mt-10 ex-mb-10">
-					                <div class="ex-pl-35">
-
-					                    <p id="sendEmailFlagErrDiv" class="txt-alert form-error"></p>
-					                    <input type="checkbox" class="form-checkbox checked" id="send-mail" onclick="ChangeSendEmailFlag();" checked="checked"><label for="send-mail">メールマガジンを受け取る</label>
-					                    <p class="fnt12 ex-mt-5">music.jpからのお知らせが届きます。</p>
-					                    <input id="mailReceiveFlag" name="mailReceiveFlag" type="hidden" value="1">
-					                </div>
-					                <hr class="border-b-1 ex-mt-10 ex-mb-25">
+									</li>
+									</ul>
 					            </div>
                                 <!-- Change this to a button or input when using this as a form -->
                                 <input type="submit" value="確認画面に進む" class="btn btn-lg btn-success btn-block" />
@@ -113,6 +86,17 @@
              </div>
     </div>
   </div>
+  <div layout:fragment="moreScripts">
+    <!-- DataTables JavaScript -->
+    <script th:src="@{/vendors/bootstrap-datepicker/js/bootstrap-datepicker.js}" type="text/javascript" src="/vendors/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+
+    <!-- Page-Level Demo Scripts - Tables - Use for reference -->
+    <script>
+    $(document).ready(function() {
+        $('#usrBth').datepicker();
+    });
+    </script>
+</div>
 </body>
 
 </html>

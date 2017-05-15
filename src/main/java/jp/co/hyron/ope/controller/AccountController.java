@@ -4,11 +4,6 @@ import java.util.UUID;
 
 import javax.validation.Valid;
 
-import jp.co.hyron.ope.dto.AccountDto;
-import jp.co.hyron.ope.entity.UserMst;
-import jp.co.hyron.ope.repository.UserMstRepository;
-import jp.co.hyron.ope.service.MailService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +14,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+
+import jp.co.hyron.ope.dto.EmailDto;
+import jp.co.hyron.ope.entity.UserMst;
+import jp.co.hyron.ope.repository.UserMstRepository;
+import jp.co.hyron.ope.service.MailService;
 
 @Controller
 @RequestMapping("/account")
@@ -31,7 +31,7 @@ public class AccountController {
     private UserMstRepository userMstRepository;
 
     @RequestMapping(value = {"/sendmail" }, method = RequestMethod.POST)
-    public String sendMail(final Model model, @Valid @ModelAttribute("account") AccountDto account, BindingResult result) {
+    public String sendMail(final Model model, @Valid @ModelAttribute("account") EmailDto account, BindingResult result) {
         if (!result.hasErrors()) {
             String userId = account.getEmail();
             if (userMstRepository.findOne(userId) != null) {
@@ -54,7 +54,7 @@ public class AccountController {
 
     @RequestMapping(value = {"/index" }, method = RequestMethod.GET)
     public ModelAndView index(final Model model) {
-        model.addAttribute("account", new AccountDto());
+        model.addAttribute("account", new EmailDto());
         return new ModelAndView("account/index");
     }
 
