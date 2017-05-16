@@ -50,7 +50,7 @@ public class UserController {
     public String add(@Valid UserDto user, BindingResult result, final Model model, Principal principal) {
         if (!result.hasErrors()) {
             UserMst usr = new UserMst();
-            usr.convertToUser(user, true);
+            // usr.convertToUser(user);
             userRepository.saveAndFlush(usr);
             return "redirect:/user/users";
         } else {
@@ -85,7 +85,7 @@ public class UserController {
         if (!result.hasErrors()) {
             if (loginUser != null && loginUser.getName().equals(user.getUserId())) {
                 UserMst usr = userRepository.findOne(user.getUserId());
-                usr.convertToUser(user, true);
+                // usr.convertToUser(user, true);
                 userRepository.saveAndFlush(usr);
             } else {
                 throw new AccessControlException("403 returned");
@@ -113,7 +113,7 @@ public class UserController {
             // ログインユーザー取得
             // String updName = (principal != null) ? principal.getName() : "未ログインユーザ";
             UserMst usr = userRepository.findOne(user.getUserId());
-            usr.convertToUser(user, true);
+            // usr.convertToUser(user, true);
             userRepository.saveAndFlush(usr);
             return "redirect:/user/users";
         } else {

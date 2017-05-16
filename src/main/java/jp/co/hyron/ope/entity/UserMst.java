@@ -7,17 +7,14 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import jp.co.hyron.ope.dto.UserDto;
+import jp.co.hyron.ope.dto.AccountDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import org.springframework.security.core.userdetails.User;
 
 /**
  * 本システム用 のユーザ情報
@@ -34,9 +31,6 @@ public class UserMst implements Serializable {
     @Id
     @Column(name = "id")
     protected String id;
-
-    @JoinColumn(name = "username")
-    private User user;
 
     @Column(name = "crt_tm", nullable = false)
     private Timestamp crtTm;
@@ -86,33 +80,15 @@ public class UserMst implements Serializable {
     @Column(name = "pwd_err_cnt")
     private short pwdErrCnt;
 
-    public void convertToUser(UserDto dto, boolean isAdmin) {
-        // 自分更新不可の項目
-        if (isAdmin) {
-            if (this.usrNm != dto.getUsrNm()) {
-                this.usrNm = dto.getUsrNm();
-            }
-            if (this.usrSex != dto.getUsrSex()) {
-                this.usrSex = dto.getUsrSex();
-            }
-            if (this.usrMl != dto.getUsrMl()) {
-                this.usrMl = dto.getUsrMl();
-            }
-            if (this.spUsrId != dto.getSpUsrId()) {
-                this.spUsrId = dto.getSpUsrId();
-            }
-            if (this.jsgKb != dto.getJsgKb()) {
-                this.jsgKb = dto.getJsgKb();
-            }
-            if (this.epDt != dto.getEpDt()) {
-                this.epDt = dto.getEpDt();
-            }
-            if (this.lfDt != dto.getLfDt()) {
-                this.lfDt = dto.getLfDt();
-            }
-            if (this.usrTtl != dto.getUsrTtl()) {
-                this.usrTtl = dto.getUsrTtl();
-            }
+    public void convertToUser(AccountDto dto) {
+        if (this.usrNm != dto.getUsrNm()) {
+            this.usrNm = dto.getUsrNm();
+        }
+        if (this.usrSex != dto.getUsrSex()) {
+            this.usrSex = dto.getUsrSex();
+        }
+        if (this.usrMl != dto.getUsrMl()) {
+            this.usrMl = dto.getUsrMl();
         }
         if (this.usrBth != dto.getUsrBth()) {
             this.usrBth = dto.getUsrBth();

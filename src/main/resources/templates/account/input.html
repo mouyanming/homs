@@ -19,58 +19,61 @@
 				        <li><span>確認</span></li>
 				        <li><span>完了</span></li>
 				    </ul>
-				    <hr>
+                    </div>
+                    <div th:if="${result !=null}" class="panel-body">
+                    	<p th:text ="${result}"> ..</p>
+                    </div>
+                    <div th:if="${result == null}" class="panel-body">
                      <h2 class="panel-title">
                      	基本情報を入力してください。
 					 </h2>
-                    </div>
-                    <div class="panel-body">
-                        <form role="form" method="post" th:action="@{/account/sendmail}" th:object="${account}">
+					  <hr>
+                        <form role="form" method="post" th:action="@{/account/confirm}" th:object="${account}">
                             <fieldset>
                                 <div class="section-inner">
 								    <ul class="mylist">
-									<li><i class="fa fa-envelope-o fa-fw"></i><p><span class="media__heading" th:text="*{id}"></span><br>
+									<li><i class="fa fa-envelope-o fa-fw"></i><p><span class="media__heading" th:text="*{email}"></span><br>
 									        <span class="fnt10 text-normal">※メールアドレスはログイン時に使用します。</span></p>
-									        <input id="email" name="email" type="hidden" th:value="*{id}">
+									        <input id="email" name="email" type="hidden" th:field="*{email}" th:value="*{email}">
 									</li>
 									<hr class="border-b-1 ex-mt-10 ex-mb-10">
 									<li><i class="fa fa-key fa-fw"></i>
 									        <p>
-									        <input type="password" name="password" class="form-text ex-mb-5 js-toggle-pass-mask" placeholder="パスワード" maxlength="30" id="newPassTextMask"><br>
+									        <input type="password" name="password" th:field="*{password}" class="form-text ex-mb-5 js-toggle-pass-mask" placeholder="パスワード" maxlength="30" id="newPassTextMask"><br>
 									        <span class="fnt10 form-appendix">※半角英数字8文字以上18文字以内。半角英字、半角数字の両方を使用してください。</span>
 									        </p>
+									        <p class="color-red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">...</p>
 									</li>
 									<hr class="border-b-1 ex-mt-10 ex-mb-10">
 									<li><i class="fa fa-smile-o fa-fw"></i>
 									        <p>
-									        <input type="text" name="name" class="form-text ex-mb-5 js-toggle-pass-mask" placeholder="名前" maxlength="30" id="newPassTextMask">
+									        <input type="text" name="usrNm" th:field="*{usrNm}" class="form-text ex-mb-5 js-toggle-pass-mask" placeholder="名前" maxlength="30" id="newPassTextMask">
 									        </p>
 									</li>
 									<hr class="border-b-1 ex-mt-10 ex-mb-10">
 									<li><i class="fa fa-mobile fa-fw"></i>
 									        <p>
-									        <input type="text" name="tmobile" class="form-text ex-mb-5" placeholder="携帯電話" maxlength="30" id="newPassTextMask"><br>
+									        <input type="text" name="usrMb" th:field="*{usrMb}" class="form-text ex-mb-5" placeholder="携帯電話" maxlength="30" id="newPassTextMask"><br>
 									        <span class="fnt10 form-appendix">※半角数字のみ</span>
 									        </p>
+									        <p class="color-red" th:if="${#fields.hasErrors('usrMb')}" th:errors="*{usrMb}">...</p>
 									</li>
 									<hr class="border-b-1 ex-mt-10 ex-mb-10">
-									
+
 									<li><i class="fa fa-user fa-fw"></i>
-									        
-					                            <input type="radio" class="form-radio" name="usrSex" id=usrSex checked value="2" th:field="*{usrSex}" >
-					                            <label for="man"><span class="text">男性</span></label>
-					                       
-					                            <input type="radio" class="form-radio" name="usrSex" id=usrSex value="1" th:field="*{usrSex}" >
-					                            <label for="woman"><span class="text">女性</span></label>
+			                            <input type="radio" class="form-radio" name="usrSex" id=usrSex checked value="2" th:field="*{usrSex}" >
+			                            <label for="man"><span class="text">男性</span></label>
+
+			                            <input type="radio" class="form-radio" name="usrSex" id=usrSex value="1" th:field="*{usrSex}" >
+			                            <label for="woman"><span class="text">女性</span></label>
 									</li>
 									<hr class="border-b-1 ex-mt-10 ex-mb-10">
 									<li><i class="fa fa-calendar fa-fw"></i>
-									<p>					                    
-					                       <input type="text" class="form-text ex-mb-5　datepicker date-control" id="usrBth" name="usrBth" placeholder="生年月日" th:field="*{usrBth}" maxlength="15" /><br>
-					                       <span class="fnt10 form-appendix ">※半角数字　例：19800501</span>
-					                       <p class="color-red" th:if="${#fields.hasErrors('usrBth')}" th:errors="*{usrBth}">...</p>
+									<p>
+				                       <input type="text" class="form-text ex-mb-5　datepicker date-control" id="usrBth" name="usrBth" placeholder="生年月日" th:field="*{usrBth}" maxlength="15" /><br>
+				                       <span class="fnt10 form-appendix ">※　例：1980/05/01</span>
+				                       <p class="color-red" th:if="${#fields.hasErrors('usrBth')}" th:errors="*{usrBth}">...</p>
 					                 </p>
-					                        <input id="birthDay" name="birthDay" type="hidden" value="">
 									</li>
 									</ul>
 					            </div>
