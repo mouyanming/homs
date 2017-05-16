@@ -3,13 +3,13 @@ package jp.co.hyron.ope.dto;
 import java.sql.Timestamp;
 import java.util.Date;
 
-import org.hibernate.validator.constraints.NotEmpty;
-import org.springframework.format.annotation.DateTimeFormat;
-
 import jp.co.hyron.ope.entity.UserMst;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Data
 @AllArgsConstructor
@@ -36,8 +36,6 @@ public class UserDto {
 
     private String usrMb;
 
-    private String usrMl;
-
     @NotEmpty
     private String usrNm;
 
@@ -57,6 +55,5 @@ public class UserDto {
         this.usrSex = usr.getUsrSex();
         this.usrTtl = usr.getUsrTtl();
         this.usrMb = usr.getUsrMb();
-        this.usrMl = usr.getUsrMl();
     }
 }

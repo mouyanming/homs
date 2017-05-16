@@ -1,5 +1,6 @@
 package jp.co.hyron.ope.controller;
 
+import java.security.Principal;
 import java.util.Locale;
 import java.util.UUID;
 
@@ -7,12 +8,14 @@ import javax.validation.Valid;
 
 import jp.co.hyron.ope.dto.AccountDto;
 import jp.co.hyron.ope.dto.EmailDto;
+import jp.co.hyron.ope.dto.PasswordDto;
 import jp.co.hyron.ope.entity.UserMst;
 import jp.co.hyron.ope.repository.UserMstRepository;
 import jp.co.hyron.ope.service.AccountService;
 import jp.co.hyron.ope.service.MailService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -34,6 +37,9 @@ public class AccountController {
 
     @Autowired
     private AccountService accountService;
+
+    @Autowired
+    private JdbcUserDetailsManager userDetailsService;
 
     @RequestMapping(value = {"/sendmail" }, method = RequestMethod.POST)
     public String sendMail(final Model model, @Valid @ModelAttribute("account") EmailDto account, BindingResult result, Locale locale) {
@@ -88,6 +94,25 @@ public class AccountController {
     public String active(final Model model, @Valid @ModelAttribute("account") AccountDto account, BindingResult result) {
         if (!result.hasErrors()) {
             accountService.createNewAccount(account);
+        }
+        return "/account/success";
+    }
+
+    @RequestMapping(value = {"/changepassword" }, method = RequestMethod.GET)
+    public String changePasswordBegin(final Model model, Principal principal) {
+        String loginName = principal.getName();
+        PasswordDto account = new PasswordDto();
+        if (loginName != null && !"".equals(loginName)) {
+            account.setEmail(loginName);
+        }
+        model.addAttribute("account", account);
+        return "/account/changepassword";
+    }
+
+    @RequestMapping(value = {"/changepassword" }, method = RequestMethod.POST)
+    public String changePasswordEnd(final Model model, @Valid @ModelAttribute("account") PasswordDto account, BindingResult result, Principal principal) {
+        if (!result.hasErrors()) {
+            userDetailsService.changePassword(account.getOldPassword(), account.getPassword());
         }
         return "/account/success";
     }

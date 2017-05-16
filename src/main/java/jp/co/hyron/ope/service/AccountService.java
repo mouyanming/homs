@@ -26,9 +26,10 @@ public class AccountService {
     @Autowired
     private UserMstRepository userMstRepository;
 
+    private PasswordEncoder encoder = new BCryptPasswordEncoder();
+
     public boolean createNewAccount(AccountDto account) {
         try {
-            PasswordEncoder encoder = new BCryptPasswordEncoder();
             List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
             authorities.add(new SimpleGrantedAuthority(CommonConst.DEF_AUTHOR_ROLE_NORMAL_USER));
             User userDetails = new User(account.getEmail(), encoder.encode(account.getPassword()), authorities);

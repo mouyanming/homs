@@ -52,13 +52,13 @@
                                             <th>姓名</th>
                                             <th>誕生日</th>
                                             <th>性別</th>
-                                            <th>会社Email</th>
                                             <th>役職</th>
+                                            <th>部署</th>
                                             <!-- <th>上位管理者</th> -->
                                             <th>所属区分</th>
                                             <!-- <th>入社日付</th> -->
                                             <!--<th>離職日付</th> -->
-                                            <!--<th>アカウント状態</th>-->
+                                            <th>アカウント状態</th>
                                             <!-- <th>パスワード入力エラー回数</th>-->
                                             <!-- <th>最新更新日</th> -->
                                             <!-- <th>作成日</th> -->
@@ -71,23 +71,27 @@
                                             <td th:text="${result.usrNm}">...</td>
                                             <td th:text="${result.usrBth}">...</td>
                                             <td th:text="${result.usrSex == 1 ? '男性' : '女性'}"></td>
-                                            <td th:text="${result.usrMl}"></td>
                                             <td th:text="${result.usrTtl}"></td>
+                                            <td th:text="${result.usrDept}"></td>
                                             <!-- <td th:text="${result.spUsrId}"></td>-->
                                             <td th:switch="${result.jsgKb}">
-                                              <p th:case="J">日本海隆</p>
-											  <p th:case="S">上海</p>
-											  <p th:case="G">外注</p>
+                                              <p th:case="JP">日本海隆</p>
+											  <p th:case="SH">上海</p>
+											  <p th:case="HZ">華</p>
+											  <p th:case="BJ">北京</p>
+											  <p th:case="BJ">江蘇</p>
+											  <p th:case="KS">崑山</p>
+											  <p th:case="WZ">外注</p>
                                             </td>
                                             <!-- <td th:text="${result.epDt}"></td>-->
                                             <!-- <td th:text="${result.lfDt}"></td>-->
-                                            <!--
                                             <td th:switch="${result.acSts}">
-                                              <p th:case="0">正常</p>
-											  <p th:case="1">ロック</p>
-											  <p th:case="9">離職</p>
+                                              <p th:case="0">未激活</p>
+											  <p th:case="1">正常</p>
+											  <p th:case="2">激活異常 </p>
+											  <p th:case="8">離職</p>
+											  <p th:case="9">ロック</p>
                                             </td>
-                                            -->
                                             <!-- <td th:text="${result.pwdErrCnt}"></td>-->
                                             <!-- <td th:text="${result.updTm}"></td>-->
                                             <!-- <td th:text="${result.crtTm}"></td>-->
