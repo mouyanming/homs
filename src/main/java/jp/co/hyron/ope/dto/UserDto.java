@@ -39,12 +39,15 @@ public class UserDto {
     @NotEmpty
     private String usrNm;
 
-    private int usrSex;
+    private short usrSex;
 
     private String usrTtl;
 
+    private int id;
+
     public UserDto(UserMst usr) {
-        this.userId = usr.getId();
+        this.id = usr.getId();
+        this.userId = usr.getUsrId();
         this.crtTm = usr.getCrtTm();
         this.epDt = usr.getEpDt();
         this.jsgKb = usr.getJsgKb();
@@ -52,8 +55,7 @@ public class UserDto {
         this.spUsrId = usr.getSpUsrId();
         this.usrBth = usr.getUsrBth();
         this.usrNm = usr.getUsrNm();
-        this.usrSex = usr.getUsrSex();
-        this.usrTtl = usr.getUsrTtl();
         this.usrMb = usr.getUsrMb();
+        this.usrSex = usr.getUsrSex() == null ? 9 : usr.getUsrSex().shortValue();
     }
 }

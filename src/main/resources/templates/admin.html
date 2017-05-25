@@ -67,9 +67,11 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
                         <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
-                        <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile(<span  th:text="${#authentication.principal.username}"></span>)</a>
+                        <li><a href="/account/profile"><i class="fa fa-user fa-fw"></i> User Profile(<span  th:text="${#authentication.principal.username}"></span>)</a>
                         </li>
-                        <li><a th:href="'/user/edit/' +${#authentication.principal.username}"><i class="fa fa-gear fa-fw"></i> Settings</a>
+                        <li><a th:href="'/user/edit/' +${#authentication.principal.username}"><i class="fa fa-gear fa-fw"></i> Setting</a>
+                        </li>
+                        <li><a href="/account/changepassword"><i class="fa fa-gear fa-fw"></i> パスワード変更</a>
                         </li>
                         <li class="divider"></li>
                         <li><a href="login.html" th:href="@{/logout}"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
@@ -103,7 +105,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
                             <a href="#"><i class="fa fa-user fa-fw"></i> 人員管理<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                             　　　　　　　　　　　　　　　　　<li sec:authorize="hasRole('ROLE_ADMIN')">
-                                    <a href="/user/users.html">人員一覧</a>
+                                    <a href="/account/list">人員一覧</a>
                                 </li>
                                 <li>
                                     <a href="flot.html">出張管理</a>
@@ -183,10 +185,12 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
     <!-- Metis Menu Plugin JavaScript -->
     <script th:src="@{/admin/bower_components/metisMenu/metisMenu.min.js}" src="../static/admin/bower_components/metisMenu/metisMenu.min.js"></script>
 
-    <div layout:fragment="moreScripts" th:remove="tag"></div>
-
     <!-- Custom Theme JavaScript -->
     <script th:src="@{/admin/js/sb-admin-2.js}" src="../static/admin/js/sb-admin-2.js"></script>
+
+    <div layout:fragment="moreScripts" th:remove="tag"></div>
+
+
 
 </body>
 

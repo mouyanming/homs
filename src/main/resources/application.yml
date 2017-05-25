@@ -23,5 +23,11 @@ spring:
     password: hyron20170515
     properties.mail.smtp.auth: true
     properties.mail.smtp.starttls.enable: true
+  http:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+homs:
+  rootUrl: http://localhost:8080
 
 logging.level.org.springframework.security: INFO

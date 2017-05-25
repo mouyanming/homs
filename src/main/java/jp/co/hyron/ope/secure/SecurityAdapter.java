@@ -42,7 +42,7 @@ public class SecurityAdapter extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/css/**", "/js/**", "/images/**", "/vendors/**", "/fonts/**");
+        web.ignoring().antMatchers("/css/**", "/js/**", "/images/**", "/vendors/**", "/fonts/**", "/themes/**", "/admin/css/**", "/admin/js/**", "/admin/bower_components/**");
     }
 
     @Override
@@ -62,10 +62,9 @@ public class SecurityAdapter extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().antMatchers("/admin/css/**").permitAll().antMatchers("/admin/js/**").permitAll().antMatchers("/admin/bower_components/**").permitAll().antMatchers("/account/**")
-                .permitAll().anyRequest().authenticated().and().formLogin().loginPage("/login").defaultSuccessUrl("/index.html").failureUrl("/login?error").permitAll().and().logout()
-                .logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login?logout").deleteCookies("JSESSIONID").invalidateHttpSession(true).permitAll().and().rememberMe()
-                .tokenRepository(jdbcTokenRepository()).tokenValiditySeconds(604800);// remember for a week. ( 1 * 60 * 60 * 24 * 7 ) sec
+        http.authorizeRequests().antMatchers("/account/**").permitAll().anyRequest().authenticated().and().formLogin().loginPage("/login").defaultSuccessUrl("/index.html").failureUrl("/login?error")
+                .permitAll().and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login?logout").deleteCookies("JSESSIONID").invalidateHttpSession(true)
+                .permitAll().and().rememberMe().tokenRepository(jdbcTokenRepository()).tokenValiditySeconds(604800);// remember for a week. ( 1 * 60 * 60 * 24 * 7 ) sec
         http.authorizeRequests().antMatchers("/console/**").permitAll();
 
         http.csrf().disable();
