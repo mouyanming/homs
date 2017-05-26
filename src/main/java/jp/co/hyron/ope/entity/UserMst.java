@@ -54,7 +54,7 @@ public class UserMst implements Serializable {
     private Date lfDt;
 
     // 上位管理者（のusr_id）（自分更新不可、不可視）
-    @Column(name = "sp_usr_id", length = 20)
+    @Column(name = "sp_usr_id")
     private String spUsrId;
 
     @Column(name = "upd_tm", nullable = false)
@@ -76,7 +76,7 @@ public class UserMst implements Serializable {
 
     // 性別　0:女性 1:男性（値がある状態の場合、自分更新不可）
     @Column(name = "usr_sex")
-    private Short usrSex;
+    private short usrSex;
 
     // 役職（自分更新不可、不可視）
     @Column(name = "usr_ttl", length = 20)
@@ -88,7 +88,7 @@ public class UserMst implements Serializable {
 
     // アカウント状態。0:未激活 1:正常 2:激活異常 8:離職 9:ロック（自分更新不可、不可視）
     @Column(name = "ac_sts")
-    private Short acSts;
+    private short acSts;
 
     // パスワード入力エラー回数。5回以上ロック　（自分更新不可、不可視）
     @Column(name = "pwd_err_cnt")

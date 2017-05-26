@@ -14,6 +14,6 @@ public class EmailDto {
 
     @NotEmpty
     @Email
-    private String email;
+    protected String email;
 
 }

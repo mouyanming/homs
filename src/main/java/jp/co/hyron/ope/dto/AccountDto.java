@@ -42,7 +42,7 @@ public class AccountDto extends EmailDto {
         this.setUsrBth(usr.getUsrBth());
         this.setUsrMb(usr.getUsrMb());
         this.setUsrNm(usr.getUsrNm());
-        this.setUsrSex(usr.getUsrSex() == null ? 9 : usr.getUsrSex().shortValue());
+        this.setUsrSex(usr.getUsrSex());
     }
 
 }

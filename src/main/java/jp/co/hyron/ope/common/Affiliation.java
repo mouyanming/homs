@@ -1,10 +1,22 @@
 package jp.co.hyron.ope.common;
 
+import lombok.Getter;
+
 /**
  * @author li_x
  */
-public enum Affiliation {
+@Getter
+public enum Affiliation implements Values {
 
-    // 所属区分："JP"：日本海隆、"SH"：上海　"HZ"華　"BJ"北京 "JS"江蘇　KS　 "WZ":外注（自分更新不可）
-    JP, SH, HZ, BJ, JS, KS, WZ
+    JP("日本海隆"), SH("上海"), HZ("華鐘"), BJ("北京"), JS("江蘇"), KS("昆山"), WZ("外注");
+
+    private String text;
+
+    private String value;
+
+    private Affiliation(String text) {
+        this.value = this.name();
+        this.text = text;
+    }
+
 }

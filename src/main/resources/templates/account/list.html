@@ -65,7 +65,7 @@
                                     </thead>
                                     <tbody>
                                         <tr th:each="result : ${list}" class="odd gradeX">
-                                            <td><a th:href="'/account/info/' + ${result.id}" th:text="${result.id}"></a></td>
+                                            <td><a th:href="'/account/info/' + ${result.id}" th:text="${result.usrId}"></a></td>
                                             <td th:text="${result.usrNm}">...</td>
                                             <td th:text="${result.usrBth}">...</td>
                                             <td th:text="${result.usrSex == 1 ? '男性' : '女性'}"></td>
@@ -94,9 +94,11 @@
                                             <!-- <td th:text="${result.updTm}"></td>-->
                                             <!-- <td th:text="${result.crtTm}"></td>-->
                                             <td class="center link_no_underline">
+                                            <a th:href="${'/account/edit/'+result.id}">
                                             <button class="btn btn-xs btn-warning edit" th:id="${result.id}">
 												<i class="glyphicon glyphicon-edit"></i> 編集
 											</button>
+											</a>
 											<button class="btn btn-xs btn-danger delete" th:id="${result.id}">
 												<i class="glyphicon glyphicon-trash"></i> 削除
 											</button>

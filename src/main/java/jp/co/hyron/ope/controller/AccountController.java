@@ -11,6 +11,7 @@ import jp.co.hyron.ope.common.Status;
 import jp.co.hyron.ope.dto.AccountDto;
 import jp.co.hyron.ope.dto.EmailDto;
 import jp.co.hyron.ope.dto.PasswordDto;
+import jp.co.hyron.ope.dto.UserDto;
 import jp.co.hyron.ope.entity.UserMst;
 import jp.co.hyron.ope.repository.UserMstRepository;
 import jp.co.hyron.ope.service.AccountService;
@@ -248,5 +249,26 @@ public class AccountController {
         UserMst user = accountService.getUserById(id);
         model.addAttribute("user", user);
         return new ModelAndView("account/profile");
+    }
+
+    @Secured({CommonConst.ROLE_ADMIN })
+    @GetMapping(value = "/edit/{id}")
+    public ModelAndView edit(@PathVariable("id") int id, final Model model) {
+        model.addAttribute("userDto", accountService.getUserDtoById(id));
+        model.addAttribute("affiliations", CommonConst.affilications);
+        model.addAttribute("authlist", CommonConst.authorites);
+        return new ModelAndView("account/edit");
+    }
+
+    @Secured({CommonConst.ROLE_ADMIN })
+    @PostMapping(value = "/edit")
+    public ModelAndView editPost(final Model model, @Valid @ModelAttribute UserDto userDto, BindingResult result, Locale locale) {
+        if (!result.hasFieldErrors()) {
+            boolean isOk = accountService.updateAccount(userDto, result);
+            if (isOk) {
+                return new ModelAndView("redirect:/account/list");
+            }
+        }
+        return new ModelAndView("account/edit");
     }
 }

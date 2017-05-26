@@ -33,9 +33,7 @@
 
 				<div class="row">
 					<div class="panel-body">
-							<div class="section-inner  col-md-4">
-
-
+							<div class="section-inner  col-md-5">
 							<form id="data_upload_form"	role="form"  enctype="multipart/form-data" method="post">
 
 									<div class="thumbnail">
@@ -71,7 +69,7 @@
 									<i class="fa fa-calendar fa-fw"></i>
 								</div>
 								<div class="media-body">
-									<h4 class="media-heading" th:text="${#dates.format(user.usrBth, 'yyyy/MM/dd')}">生年月日</h4>
+									<h4 class="media-heading" th:text="${user.usrBth}">生年月日</h4>
 								</div>
 							</div>
 
@@ -129,7 +127,7 @@
 									<i class="fa fa-calendar fa-fw"></i>
 								</div>
 								<div class="media-body" >
-                                      <h4 class="media-heading" th:switch="${#dates.format(user.epDt == null ? '': user.epDt, 'yyyy/MM/dd')}">入社日未入力</h4>
+                                      <h4 class="media-heading" th:text="${user.epDt}">入社日未入力</h4>
 								</div>
 							</div>
 							<div class="media" sec:authorize="hasRole('ROLE_ADMIN')">
@@ -137,7 +135,7 @@
 									<i class="fa fa-calendar fa-fw"></i>
 								</div>
 								<div class="media-body" >
-                                      <h4 class="media-heading" th:switch="*{user.usrTtl}">役職</h4>
+                                      <h4 class="media-heading" th:text="*{user.usrTtl}">役職</h4>
 								</div>
 							</div>
 							<div class="media" sec:authorize="hasRole('ROLE_ADMIN')">
@@ -145,7 +143,7 @@
 									<i class="fa fa-calendar fa-fw"></i>
 								</div>
 								<div class="media-body" >
-                                      <h4 class="media-heading" th:switch="${#dates.format(user.lfDt, 'yyyy/MM/dd')}">離職日付</h4>
+                                      <h4 class="media-heading" th:text="${user.lfDt}">離職日付</h4>
 								</div>
 							</div>
 							<div class="media" sec:authorize="hasRole('ROLE_ADMIN')">
@@ -186,7 +184,6 @@
 	            uploadUrl: "/account/uploadimage/1", // server upload action
 	            uploadAsync: true,
 	            maxFileCount: 1,
-	            showCaption: false,
 	            dropZoneEnabled: false,
 	            showPreview: false,
 	            uploadExtraData: {id: $("input[name=id]").val()},
