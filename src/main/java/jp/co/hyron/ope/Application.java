@@ -16,9 +16,14 @@
 
 package jp.co.hyron.ope;
 
+import jp.co.hyron.ope.storage.StorageProperties;
+import jp.co.hyron.ope.storage.StorageService;
+
 import org.h2.server.web.WebServlet;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableAsync;
@@ -26,6 +31,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 
 @SpringBootApplication
 @EnableAsync
+@EnableConfigurationProperties(StorageProperties.class)
 public class Application extends WebMvcConfigurerAdapter {
 
     public static void main(String[] args) throws Exception {
@@ -37,5 +43,12 @@ public class Application extends WebMvcConfigurerAdapter {
         ServletRegistrationBean registrationBean = new ServletRegistrationBean(new WebServlet());
         registrationBean.addUrlMappings("/console/*");
         return registrationBean;
+    }
+
+    @Bean
+    CommandLineRunner init(StorageService storageService) {
+        return (args) -> {
+            storageService.init();
+        };
     }
 }

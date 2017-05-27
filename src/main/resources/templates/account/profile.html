@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+	layout:decorator="admin">
+<head>
+<!-- DataTables CSS -->
+<link th:href="@{/admin/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css}" rel="stylesheet" />
+
+<!-- DataTables Responsive CSS -->
+<link th:href="@{/admin/bower_components/datatables-responsive/css/dataTables.responsive.css}"	rel="stylesheet" />
+
+<link href="/css/fileinput.css" media="all" rel="stylesheet" type="text/css"/>
+<link href="/themes/explorer/theme.css" media="all" rel="stylesheet" type="text/css"/>
+
+</head>
+
+<body>
+	<div layout:fragment="content">
+		<div class="container">
+			<!-- content -->
+			<div class="col-md-12">
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="page-header bootstrap-admin-content-title">
+							<h2>ユーザー情報</h2>
+						</div>
+					</div>
+				</div>
+
+				<p></p>
+
+				<div class="row">
+					<div class="panel-body">
+							<div class="section-inner  col-md-5">
+							<form id="data_upload_form"	role="form"  enctype="multipart/form-data" method="post">
+
+									<div class="thumbnail">
+	                                	<img th:src="*{user.image == null ? '/img/noimage.jpg' :  user.image}" alt="..." >
+									</div>
+									<div class="form-group">
+									<input id="upload_file" name="upload_file" class="file-loading" type="file">
+							        <input id="id" name="id" th:value="*{user.id}" type="hidden">
+					        　　　　　　　		</div>
+						    </form>
+						</div>
+						<div class="section-inner">
+						<fieldset>
+							<div class="media">
+								<div class="media-left">
+									<i class="fa fa-envelope-o fa-fw"></i>
+								</div>
+								<div class="media-body">
+									<h4 class="media-heading" th:text="*{user.usrId}">メールアドレス</h4>
+								</div>
+							</div>
+							<div class="media">
+								<div class="media-left">
+									<i class="fa fa-smile-o fa-fw"></i>
+								</div>
+								<div class="media-body">
+									<h4 class="media-heading" th:text="*{user.usrNm}">表示名</h4>
+								</div>
+							</div>
+
+							<div class="media">
+								<div class="media-left">
+									<i class="fa fa-calendar fa-fw"></i>
+								</div>
+								<div class="media-body">
+									<h4 class="media-heading" th:text="${user.usrBth}">生年月日</h4>
+								</div>
+							</div>
+
+							<div class="media">
+								<div class="media-left">
+									<i class="fa fa-user fa-fw"></i>
+								</div>
+								<div class="media-body">
+									<h4 class="media-heading" th:text="*{user.usrSex == 0 ? '女性' : '男性'}">性別</h4>
+								</div>
+							</div>
+
+							<div class="media">
+								<div class="media-left">
+									<i class="fa fa-phone fa-fw"></i>
+								</div>
+								<div class="media-body">
+									<h4 class="media-heading" th:text="*{user.usrMb}">未入力</h4>
+								</div>
+							</div>
+
+							<div class="media">
+								<div class="media-left">
+									<i class="fa fa-group fa-fw"></i>
+								</div>
+								<div class="media-body" th:switch="*{user.jsgKb}">
+                                      <h4 class="media-heading" th:case="JP">日本海隆 </h4>
+									  <h4 class="media-heading" th:case="SH">上海 </h4>
+									  <h4 class="media-heading" th:case="HZ">華 </h4>
+									  <h4 class="media-heading" th:case="BJ">北京 </h4>
+									  <h4 class="media-heading" th:case="BJ">江蘇 </h4>
+									  <h4 class="media-heading" th:case="KS">崑山 </h4>
+									  <h4 class="media-heading" th:case="WZ">外注 </h4>
+									  <h4 class="media-heading" th:case="*">所属区分未入力 </h4>
+								</div>
+							</div>
+
+							<div class="media">
+								<div class="media-left">
+									<i class="fa fa-group fa-fw"></i>
+								</div>
+								<div class="media-body" th:switch="*{user.usrDept}">
+                                      <h4 class="media-heading" th:case="100">第一本部</h4>
+									  <h4 class="media-heading" th:case="200">第二本部 </h4>
+									  <h4 class="media-heading" th:case="300">第三本部 </h4>
+									  <h4 class="media-heading" th:case="400">第四本部 </h4>
+									  <h4 class="media-heading" th:case="500">第五本部 </h4>
+									  <h4 class="media-heading" th:case="600">第六本部 </h4>
+									  <h4 class="media-heading" th:case="700">第七本部 </h4>
+									  <h4 class="media-heading" th:case="*">部署未入力 </h4>
+								</div>
+							</div>
+							<div class="media">
+								<div class="media-left">
+									<i class="fa fa-calendar fa-fw"></i>
+								</div>
+								<div class="media-body" >
+                                      <h4 class="media-heading" th:text="${user.epDt}">入社日未入力</h4>
+								</div>
+							</div>
+							<div class="media" sec:authorize="hasRole('ROLE_ADMIN')">
+								<div class="media-left">
+									<i class="fa fa-calendar fa-fw"></i>
+								</div>
+								<div class="media-body" >
+                                      <h4 class="media-heading" th:text="*{user.usrTtl}">役職</h4>
+								</div>
+							</div>
+							<div class="media" sec:authorize="hasRole('ROLE_ADMIN')">
+								<div class="media-left">
+									<i class="fa fa-calendar fa-fw"></i>
+								</div>
+								<div class="media-body" >
+                                      <h4 class="media-heading" th:text="${user.lfDt}">離職日付</h4>
+								</div>
+							</div>
+							<div class="media" sec:authorize="hasRole('ROLE_ADMIN')">
+								<div class="media-left">
+									<i class="glyphico glyphicon-user"></i>
+								</div>
+								<div class="media-body" >
+                                      <h4 class="media-heading" th:switch="*{user.spUsrId}">上位管理者</h4>
+								</div>
+							</div>
+						</fieldset>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div th:if="${errMessage}" class="col-lg-12" id="alertMessage">
+				<div class="alert alert-danger bootstrap-admin-alert">
+					<button type="button" class="close" data-dismiss="alert">×</button>
+					<p th:text="${errMessage}"></p>
+				</div>
+			</div>
+		</div>
+
+	</div>
+	<!-- /layout:fragment="content" -->
+
+	<div layout:fragment="moreScripts">
+		<!-- Page-Level Demo Scripts - Tables - Use for reference -->
+		<script src="/js/plugins/sortable.js" type="text/javascript"></script>
+	    <script src="/js/fileinput.js" type="text/javascript"></script>
+	    <script src="/js/locales/fr.js" type="text/javascript"></script>
+	    <script src="/js/locales/es.js" type="text/javascript"></script>
+	    <script src="/themes/explorer/theme.js" type="text/javascript"></script>
+	    <script src="/js/jquery.MyThumbnail.js" type="text/javascript" ></script>
+		<script>
+		$(document).on('ready', function () {
+			$("#upload_file").fileinput({
+	            uploadUrl: "/account/uploadimage/1", // server upload action
+	            uploadAsync: true,
+	            maxFileCount: 1,
+	            dropZoneEnabled: false,
+	            showPreview: false,
+	            uploadExtraData: {id: $("input[name=id]").val()},
+	            browseLabel: '画像変更',
+	        }).on('fileuploaded', function(event, data, previewId, index) {
+	        	$(".thumbnail img").attr('src',data.response.result);
+	    	});
+//            $(".thumbnails img").MyThumbnail({
+//                thumbWidth:50,
+//                thumbHeight:60,
+//            });
+
+        });
+
+
+
+		</script>
+	</div>
+</body>
+
+</html>

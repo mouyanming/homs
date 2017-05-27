@@ -1,6 +1,5 @@
 package jp.co.hyron.ope.dto;
 
-import java.sql.Timestamp;
 import java.util.Date;
 
 import jp.co.hyron.ope.entity.UserMst;
@@ -8,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -16,44 +16,53 @@ import org.springframework.format.annotation.DateTimeFormat;
 @NoArgsConstructor
 public class UserDto {
 
-    @NotEmpty
-    private String userId;
+    @DateTimeFormat(pattern = "yyyy/MM/dd")
+    private Date usrBth;
 
-    private Timestamp crtTm;
+    @Length(min = 0, max = 11)
+    private String usrMb;
+
+    @NotEmpty
+    private String usrNm;
+
+    private short usrSex;
+
+    private String usrId;
+
+    private int id;
+
+    private String usrTtl;
+
+    private short status;
 
     @DateTimeFormat(pattern = "yyyy/MM/dd")
     private Date epDt;
-
-    private String jsgKb;
 
     @DateTimeFormat(pattern = "yyyy/MM/dd")
     private Date lfDt;
 
     private String spUsrId;
 
-    @DateTimeFormat(pattern = "yyyy/MM/dd")
-    private Date usrBth;
+    private String jsgKb;
 
-    private String usrMb;
+    private String usrDept;
 
-    @NotEmpty
-    private String usrNm;
+    private Short pwdErrCnt = 0;
 
-    private int usrSex;
-
-    private String usrTtl;
+    private String authorites;
 
     public UserDto(UserMst usr) {
-        this.userId = usr.getId();
-        this.crtTm = usr.getCrtTm();
-        this.epDt = usr.getEpDt();
-        this.jsgKb = usr.getJsgKb();
-        this.lfDt = usr.getLfDt();
-        this.spUsrId = usr.getSpUsrId();
+        this.id = usr.getId();
+        this.usrId = usr.getUsrId();
         this.usrBth = usr.getUsrBth();
+        this.usrMb = usr.getUsrMb();
         this.usrNm = usr.getUsrNm();
         this.usrSex = usr.getUsrSex();
-        this.usrTtl = usr.getUsrTtl();
-        this.usrMb = usr.getUsrMb();
+        this.jsgKb = usr.getJsgKb();
+        this.epDt = usr.getEpDt();
+        this.lfDt = usr.getLfDt();
+        this.pwdErrCnt = usr.getPwdErrCnt();
+        this.status = usr.getAcSts();
+        this.spUsrId = usr.getSpUsrId();
     }
 }

@@ -28,7 +28,7 @@
                      	基本情報を入力してください。
 					 </h2>
 					  <hr>
-                        <form role="form" method="post" th:action="@{/account/confirm}" th:object="${account}">
+                        <form role="form" method="post" th:action="@{/account/reg/confirm}" th:object="${account}">
                             <fieldset>
                                 <div class="section-inner">
 								    <ul class="mylist">
@@ -61,10 +61,10 @@
 									<hr class="border-b-1 ex-mt-10 ex-mb-10">
 
 									<li><i class="fa fa-user fa-fw"></i>
-			                            <input type="radio" class="form-radio" name="usrSex" id=usrSex checked value="2" th:field="*{usrSex}" >
+			                            <input type="radio" class="form-radio" name="usrSex" id=usrSex checked value="1" th:field="*{usrSex}" >
 			                            <label for="man"><span class="text">男性</span></label>
 
-			                            <input type="radio" class="form-radio" name="usrSex" id=usrSex value="1" th:field="*{usrSex}" >
+			                            <input type="radio" class="form-radio" name="usrSex" id=usrSex checked value="0" th:field="*{usrSex}" >
 			                            <label for="woman"><span class="text">女性</span></label>
 									</li>
 									<hr class="border-b-1 ex-mt-10 ex-mb-10">

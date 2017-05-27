@@ -36,4 +36,19 @@ public class MailService {
         mailSender.send(msg);
 
     }
+
+    @Async
+    // 別スレッドで実行される
+    public void sendPassword(String mailAddr, String newPassword, Locale locale) {
+        SimpleMailMessage msg = new SimpleMailMessage();
+        msg.setTo(mailAddr);
+        msg.setSubject(messageSource.getMessage("mail.subject.setnewpassword", null, locale));
+        StringBuffer sb = new StringBuffer();
+        sb.append("パスワード更新しました。").append(System.getProperty("line.separator"));
+        sb.append("新しいパスワードは下記となります ").append(System.getProperty("line.separator"));
+        sb.append(newPassword).append(System.getProperty("line.separator"));
+        msg.setText(sb.toString());
+        mailSender.send(msg);
+
+    }
 }

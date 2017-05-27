@@ -28,14 +28,17 @@ public class AccountDto extends EmailDto {
     @NotEmpty
     private String usrNm;
 
-    private int usrSex;
+    private short usrSex;
 
     @NotEmpty
     @Length(min = 8, max = 20)
     private String password;
 
+    private int id;
+
     public AccountDto(UserMst usr) {
-        this.setEmail(usr.getId());
+        this.setId(usr.getId());
+        this.setEmail(usr.getUsrId());
         this.setUsrBth(usr.getUsrBth());
         this.setUsrMb(usr.getUsrMb());
         this.setUsrNm(usr.getUsrNm());
