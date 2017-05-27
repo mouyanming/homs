@@ -2,15 +2,16 @@ package jp.co.hyron.ope.dto;
 
 import java.util.Date;
 
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import jp.co.hyron.ope.common.Role;
 import jp.co.hyron.ope.entity.UserMst;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-
-import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotEmpty;
-import org.springframework.format.annotation.DateTimeFormat;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -35,6 +36,8 @@ public class AccountDto extends EmailDto {
     private String password;
 
     private int id;
+
+    private Role role = Role.ROLE_NORMAL_USER;
 
     public AccountDto(UserMst usr) {
         this.setId(usr.getId());

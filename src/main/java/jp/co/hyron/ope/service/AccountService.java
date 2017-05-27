@@ -2,39 +2,32 @@ package jp.co.hyron.ope.service;
 
 import java.nio.file.Path;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
-import jp.co.hyron.ope.common.CommonConst;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
+
 import jp.co.hyron.ope.common.CommonUtil;
 import jp.co.hyron.ope.common.ConvertDtoToEntity;
 import jp.co.hyron.ope.common.Status;
 import jp.co.hyron.ope.controller.AccountController;
 import jp.co.hyron.ope.dto.AccountDto;
 import jp.co.hyron.ope.dto.UserDto;
+import jp.co.hyron.ope.entity.User;
 import jp.co.hyron.ope.entity.UserMst;
 import jp.co.hyron.ope.repository.UserMstRepository;
 import jp.co.hyron.ope.storage.StorageService;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.JdbcUserDetailsManager;
-import org.springframework.stereotype.Service;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
 @Service
 public class AccountService {
 
     @Autowired
-    private JdbcUserDetailsManager userDetailsService;
+    private UserService userDetailsService;
 
     @Autowired
     private UserMstRepository userMstRepository;
@@ -52,14 +45,9 @@ public class AccountService {
 
     public boolean createNewAccount(AccountDto account) {
         try {
-            List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-            authorities.add(new SimpleGrantedAuthority(CommonConst.ROLE_NORMAL_USER));
-            User userDetails = new User(account.getEmail(), passwordEncoder.encode(account.getPassword()), authorities);
-            if (!userDetailsService.userExists(account.getEmail())) {
-                userDetailsService.createUser(userDetails);
-            } else {
-                userDetailsService.updateUser(userDetails);
-            }
+            if (userDetailsService.getUserByEmail(account.getEmail()) == null) {
+                userDetailsService.create(account);
+            } 
 
             UserMst usr = userMstRepository.findUsrByUsrId(account.getEmail());
             usr.setUsrBth(account.getUsrBth());
@@ -76,10 +64,11 @@ public class AccountService {
 
     public String setNewPassword(String email) {
         String newPassword = CommonUtil.makePassWord(8);
-        if (userDetailsService.userExists(email)) {
-            User userDetails = new User(email, passwordEncoder.encode(newPassword), userDetailsService.loadUserByUsername(email).getAuthorities());
+        User usr = userDetailsService.getUserByEmail(email).get();
+        if (usr !=null) {
+        	usr.setPassword(passwordEncoder.encode(newPassword));
             try {
-                userDetailsService.updateUser(userDetails);
+                userDetailsService.update(usr);
             } catch (Exception e) {
                 return null;
             }
@@ -99,13 +88,13 @@ public class AccountService {
 
     public UserDto getUserDtoById(int id) {
         UserMst user = userMstRepository.findOne(id);
-        UserDetails account = userDetailsService.loadUserByUsername(user.getUsrId());
+        User usr = userDetailsService.getUserByEmail(user.getUsrId()).get();
         String image = user.getImage();
         if (image != null && !"".equals(image)) {
             user.setImage(getImagePath(user.getImage()));
         }
         UserDto dto = new UserDto(user);
-        dto.setAuthorites(account.getAuthorities().stream().findFirst().get().getAuthority());
+        dto.setAuthorites(usr.getRole());
         return dto;
     }
 
@@ -156,13 +145,10 @@ public class AccountService {
             if (usr.getUsrId().equals(dto.getUsrId())) {
                 ConvertDtoToEntity.convertUserDtoToUserMst(dto, usr);
                 userMstRepository.saveAndFlush(usr);
-                UserDetails account = userDetailsService.loadUserByUsername(usr.getUsrId());
-                if (!dto.getAuthorites().equals(account.getAuthorities().stream().findFirst().get().getAuthority())) {
-                    List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-                    authorities.add(new SimpleGrantedAuthority(dto.getAuthorites()));
-                    User user = new User(account.getUsername(), passwordEncoder.encode(account.getPassword()), authorities);
-                    userDetailsService.updateUser(user);
-                    userDetailsService.setEnableAuthorities(true);
+                User account = userDetailsService.getUserByEmail(usr.getUsrId()).get();
+                if (!dto.getAuthorites().equals(account.getRole())) {
+                    account.setRole(dto.getAuthorites());
+                    userDetailsService.update(account);
                 }
             } else {
                 result.rejectValue("email", "error.email");

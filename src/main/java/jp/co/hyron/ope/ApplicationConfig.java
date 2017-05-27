@@ -40,13 +40,6 @@ public class ApplicationConfig implements WebSocketConfigurer {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    public JdbcUserDetailsManager userDetailsService() {
-        JdbcUserDetailsManager userDetailsService = new JdbcUserDetailsManager();
-        userDetailsService.setDataSource(dataSource);
-        return userDetailsService;
-    }
-
     /**
      * Remember Me 認証に利用するトークンのリポジトリ
      * @return

@@ -2,14 +2,15 @@ package jp.co.hyron.ope.dto;
 
 import java.util.Date;
 
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import jp.co.hyron.ope.common.Role;
 import jp.co.hyron.ope.entity.UserMst;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotEmpty;
-import org.springframework.format.annotation.DateTimeFormat;
 
 @Data
 @AllArgsConstructor
@@ -49,7 +50,7 @@ public class UserDto {
 
     private Short pwdErrCnt = 0;
 
-    private String authorites;
+    private Role authorites;
 
     public UserDto(UserMst usr) {
         this.id = usr.getId();

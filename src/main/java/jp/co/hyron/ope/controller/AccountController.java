@@ -6,17 +6,6 @@ import java.util.UUID;
 
 import javax.validation.Valid;
 
-import jp.co.hyron.ope.common.CommonConst;
-import jp.co.hyron.ope.common.Status;
-import jp.co.hyron.ope.dto.AccountDto;
-import jp.co.hyron.ope.dto.EmailDto;
-import jp.co.hyron.ope.dto.PasswordDto;
-import jp.co.hyron.ope.dto.UserDto;
-import jp.co.hyron.ope.entity.UserMst;
-import jp.co.hyron.ope.repository.UserMstRepository;
-import jp.co.hyron.ope.service.AccountService;
-import jp.co.hyron.ope.service.MailService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -26,7 +15,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.provisioning.JdbcUserDetailsManager;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -41,6 +30,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import jp.co.hyron.ope.common.CommonConst;
+import jp.co.hyron.ope.common.Status;
+import jp.co.hyron.ope.dto.AccountDto;
+import jp.co.hyron.ope.dto.EmailDto;
+import jp.co.hyron.ope.dto.PasswordDto;
+import jp.co.hyron.ope.dto.UserDto;
+import jp.co.hyron.ope.entity.UserMst;
+import jp.co.hyron.ope.repository.UserMstRepository;
+import jp.co.hyron.ope.service.AccountService;
+import jp.co.hyron.ope.service.MailService;
 
 @Controller
 @RequestMapping("/account")
@@ -59,7 +59,7 @@ public class AccountController {
     private String rootUrl;
 
     @Autowired
-    private JdbcUserDetailsManager userDetailsService;
+    private UserDetailsService userDetailsService;
 
     @RequestMapping(value = {"/reg/sendmail" }, method = RequestMethod.POST)
     public String sendMail(final Model model, @Valid @ModelAttribute("account") EmailDto account, BindingResult result, Locale locale) {
@@ -132,7 +132,8 @@ public class AccountController {
     @RequestMapping(value = {"/changepassword" }, method = RequestMethod.POST)
     public String changePasswordEnd(final Model model, @Valid @ModelAttribute("account") PasswordDto account, BindingResult result, Principal principal) {
         if (!result.hasErrors() && principal != null) {
-            userDetailsService.changePassword(account.getOldPassword(), account.getPassword());
+        	UserDetails user= userDetailsService.loadUserByUsername(account.getEmail());
+        	//user.getPassword().equals(arg0)
         }
         return "redirect:/";
     }
