@@ -2,15 +2,19 @@ package jp.co.hyron.ope.dto;
 
 import java.util.Date;
 
-import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotEmpty;
-import org.springframework.format.annotation.DateTimeFormat;
-
+import jp.co.hyron.ope.common.Affiliation;
+import jp.co.hyron.ope.common.Department;
+import jp.co.hyron.ope.common.Position;
 import jp.co.hyron.ope.common.Role;
+import jp.co.hyron.ope.common.Status;
 import jp.co.hyron.ope.entity.UserMst;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Data
 @AllArgsConstructor
@@ -32,9 +36,9 @@ public class UserDto {
 
     private int id;
 
-    private String usrTtl;
+    private Position usrTtl = Position.OTHER;
 
-    private short status;
+    private Status status;
 
     @DateTimeFormat(pattern = "yyyy/MM/dd")
     private Date epDt;
@@ -44,9 +48,9 @@ public class UserDto {
 
     private String spUsrId;
 
-    private String jsgKb;
+    private Affiliation jsgKb = Affiliation.NO;
 
-    private String usrDept;
+    private Department usrDept;
 
     private Short pwdErrCnt = 0;
 
@@ -65,5 +69,7 @@ public class UserDto {
         this.pwdErrCnt = usr.getPwdErrCnt();
         this.status = usr.getAcSts();
         this.spUsrId = usr.getSpUsrId();
+        this.usrTtl = usr.getUsrTtl();
+        this.usrDept = usr.getUsrDept();
     }
 }

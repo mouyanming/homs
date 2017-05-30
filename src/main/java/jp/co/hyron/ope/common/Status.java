@@ -1,21 +1,22 @@
 package jp.co.hyron.ope.common;
 
+import lombok.Getter;
+
 /**
  * @author li_x
  */
+@Getter
 public enum Status {
 
-    // アカウント状態。0:未激活 1:正常 2:激活異常 8:離職 9:ロック（自分更新不可、不可視）
-    NOTACTIVE((short) 0), ACTIVE((short) 1), ACTIVEERROR((short) 2), UNEMPLYED((short) 8), LOCK((short) 9);
+    NOTACTIVE((short) 0, "未激活"), ACTIVE((short) 1, "正常"), ACTIVEERROR((short) 2, "激活異常"), UNEMPLYED((short) 8, "離職"), LOCK((short) 9, "ロック");
 
     private short code;
 
-    Status(short code) {
-        this.code = code;
-    }
+    private String text;
 
-    public short getCode() {
-        return code;
+    Status(short code, String text) {
+        this.code = code;
+        this.text = text;
     }
 
     public static Status fromCode(short code) {

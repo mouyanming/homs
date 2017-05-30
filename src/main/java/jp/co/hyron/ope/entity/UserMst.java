@@ -6,6 +6,8 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -13,6 +15,10 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import jp.co.hyron.ope.common.Affiliation;
+import jp.co.hyron.ope.common.Department;
+import jp.co.hyron.ope.common.Position;
+import jp.co.hyron.ope.common.Status;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -46,7 +52,8 @@ public class UserMst implements Serializable {
 
     // 所属区分："JP"：日本海隆、"SH"：上海　"HZ"華　"BJ"北京 "JS"江蘇　KS　 "WZ":外注（自分更新不可）
     @Column(name = "jsg_kb", length = 4)
-    private String jsgKb;
+    @Enumerated(EnumType.STRING)
+    private Affiliation jsgKb;
 
     // 離職日付（"JP"の場合のみ）（自分更新不可、不可視）
     @Temporal(TemporalType.DATE)
@@ -72,7 +79,7 @@ public class UserMst implements Serializable {
 
     // 部署番号　100　第一本部
     @Column(name = "usr_dept", length = 3)
-    private String usrDept;
+    private int usrDept;
 
     // 性別　0:女性 1:男性（値がある状態の場合、自分更新不可）
     @Column(name = "usr_sex")
@@ -80,7 +87,8 @@ public class UserMst implements Serializable {
 
     // 役職（自分更新不可、不可視）
     @Column(name = "usr_ttl", length = 20)
-    private String usrTtl;
+    @Enumerated(EnumType.STRING)
+    private Position usrTtl;
 
     // 激活コード
     @Column(name = "vd_cd", unique = true, length = 64)
@@ -92,9 +100,24 @@ public class UserMst implements Serializable {
 
     // パスワード入力エラー回数。5回以上ロック　（自分更新不可、不可視）
     @Column(name = "pwd_err_cnt")
-    private Short pwdErrCnt;
+    private Short pwdErrCnt = 0;
 
     @Column(name = "image")
     private String image;
 
+    public Status getAcSts() {
+        return Status.fromCode(this.acSts);
+    }
+
+    public void setAcSts(Status status) {
+        this.acSts = status.getCode();
+    }
+
+    public Department getUsrDept() {
+        return Department.fromCode(this.usrDept);
+    }
+
+    public void setUsrDept(Department department) {
+        this.usrDept = department.getCode();
+    }
 }

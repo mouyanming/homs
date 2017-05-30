@@ -1,5 +1,9 @@
 package jp.co.hyron.ope.secure;
 
+import jp.co.hyron.ope.common.Role;
+import jp.co.hyron.ope.dto.AccountDto;
+import jp.co.hyron.ope.service.UserService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Configuration;
@@ -14,13 +18,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-import ch.qos.logback.core.net.SyslogOutputStream;
-import jp.co.hyron.ope.common.Role;
-import jp.co.hyron.ope.dto.AccountDto;
-import jp.co.hyron.ope.service.UserService;
-
-
-
 @Configuration
 @Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
@@ -34,7 +31,7 @@ public class SecurityAdapter extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private PersistentTokenRepository jdbcTokenRepository;
-    
+
     @Autowired
     private UserService userService;
 
@@ -46,10 +43,9 @@ public class SecurityAdapter extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
-        //auth.jdbcAuthentication().dataSource(dataSource);
+        // auth.jdbcAuthentication().dataSource(dataSource);
         // 管理者がないの場合、管理者を追加する
-        if (!userService.getUserByEmail("admin").isPresent()) {  
-        	System.out.println("add admin");
+        if (!userService.getUserByEmail("admin").isPresent()) {
             AccountDto dto = new AccountDto();
             dto.setEmail("admin");
             dto.setPassword("admin");
@@ -61,9 +57,10 @@ public class SecurityAdapter extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().antMatchers("/account/reg/**").permitAll().anyRequest().authenticated().and().formLogin().loginPage("/login").defaultSuccessUrl("/index.html")
-                .failureUrl("/login?error").usernameParameter("email").permitAll().and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login?logout").deleteCookies("JSESSIONID")
-                .invalidateHttpSession(true).permitAll().and().rememberMe().tokenRepository(jdbcTokenRepository).tokenValiditySeconds(604800);// remember for a week. ( 1 * 60 * 60 * 24 * 7 ) sec
+        http.authorizeRequests().antMatchers("/account/reg/**").permitAll().anyRequest().authenticated();
+        http.formLogin().loginPage("/login").defaultSuccessUrl("/index.html").failureUrl("/login?error").usernameParameter("email").permitAll();
+        http.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login?logout").deleteCookies("JSESSIONID").invalidateHttpSession(true).permitAll();
+        http.rememberMe().tokenRepository(jdbcTokenRepository).tokenValiditySeconds(604800);// remember for a week. ( 1 * 60 * 60 * 24 * 7 ) sec
         http.authorizeRequests().antMatchers("/console/**").permitAll();
 
         http.csrf().disable();

@@ -1,19 +1,14 @@
 package jp.co.hyron.ope.common;
 
+import lombok.Getter;
+
+@Getter
 public enum Role {
-	
-    ROLE_ADMIN ,
-    // 上位管理者権限
-    ROLE_MANAGER,
+    ROLE_ADMIN("システム管理者"), ROLE_MANAGER("上位管理者"), ROLE_NORMAL_USER("一般ユーザ"), ROLE_JIMU("事務処理"), ROLE_KEIYAKU("契約事務処理"), ROLE_SYUTYO("出張情報登録者");
 
-    // 一般権限
-    ROLE_NORMAL_USER ,
+    private String text;
 
-    // 事務処理権限
-    ROLE_JIMU,
-
-    // 契約事務処理権限
-    ROLE_KEIYAKU,
-    // 出張情報登録者
-    ROLE_SYUTYO ;
+    private Role(String text) {
+        this.text = text;
+    }
 }

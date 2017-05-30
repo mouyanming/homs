@@ -16,11 +16,11 @@ public class ConvertDtoToEntity {
         if (usrMb != null && !usrMb.equals(entity.getUsrMb())) {
             entity.setUsrMb(usrMb);
         }
-        String usrTtl = dto.getUsrTtl();
+        Position usrTtl = dto.getUsrTtl();
         if (usrTtl != null && !usrTtl.equals(entity.getUsrTtl())) {
             entity.setUsrTtl(usrTtl);
         }
-        String jsgKb = dto.getJsgKb();
+        Affiliation jsgKb = dto.getJsgKb();
         if (jsgKb != null && !jsgKb.equals(entity.getJsgKb())) {
             entity.setJsgKb(jsgKb);
         }
@@ -40,15 +40,15 @@ public class ConvertDtoToEntity {
         if (usrBth != null && !usrBth.equals(entity.getUsrBth())) {
             entity.setUsrBth(usrBth);
         }
-        String usrDept = dto.getUsrDept();
-        if (usrDept != null && !usrDept.equals(entity.getUsrDept())) {
+        Department usrDept = dto.getUsrDept();
+        if (usrDept != entity.getUsrDept()) {
             entity.setUsrDept(usrDept);
         }
         short usrSex = dto.getUsrSex();
         if (usrSex != entity.getUsrSex()) {
             entity.setUsrSex(usrSex);
         }
-        short acSts = dto.getStatus();
+        Status acSts = dto.getStatus();
         if (acSts != entity.getAcSts()) {
             entity.setAcSts(acSts);
         }

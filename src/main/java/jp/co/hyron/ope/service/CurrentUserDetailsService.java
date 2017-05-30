@@ -1,4 +1,4 @@
-package jp.co.hyron.ope.service.impl;
+package jp.co.hyron.ope.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;

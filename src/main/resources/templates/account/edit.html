@@ -90,13 +90,41 @@
                                                 <label class="col-lg-3 control-label" for="select01">所属区分</label>
                                                 <div class="col-lg-6">
                                                      <select class="form-control width-150" th:field="*{jsgKb}">
-                                                        <option value="">未選択</option>
+												        <option value="">未選択</option>
 												        <option th:each="value : ${affiliations}"
-												                th:value="${value.getValue()}"
-												                th:text="${value.getText()}">未選択
+												                th:value="${value}"
+												                th:text="${value.text}">未選択
 												        </option>
 												    </select>
                                                     <p class="color-red" th:if="${#fields.hasErrors('jsgKb')}" th:errors="*{jsgKb}">...</p>
+                                                </div>
+                                            </div>
+
+                                             <div class="form-group">
+                                                <label class="col-lg-3 control-label" for="select01">部署</label>
+                                                <div class="col-lg-6">
+                                                     <select class="form-control width-150" th:field="*{usrDept}">
+												        <option value="">未選択</option>
+												        <option th:each="value : ${departments}"
+												                th:value="${value}"
+												                th:text="${value.text}">未選択
+												        </option>
+												    </select>
+                                                    <p class="color-red" th:if="${#fields.hasErrors('usrDept')}" th:errors="*{usrDept}">...</p>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="col-lg-3 control-label" for="select01">役職</label>
+                                                <div class="col-lg-6">
+                                                     <select class="form-control width-150" th:field="*{usrTtl}">
+												        <option value="">未選択</option>
+												        <option th:each="value : ${positions}"
+												                th:value="${value}"
+												                th:text="${value}">未選択
+												        </option>
+												    </select>
+                                                    <p class="color-red" th:if="${#fields.hasErrors('usrTtl')}" th:errors="*{usrTtl}">...</p>
                                                 </div>
                                             </div>
 
@@ -118,16 +146,15 @@
 
                                             <div class="form-group">
                                                 <label class="col-lg-3 control-label" for="select01">アカウント状態</label>
-                                                <div class="col-lg-6">
-                                                    <select id="status" class="chzn-select form-control col-md-6" th:field="*{status}">
-                                                        <option value="0">未激活</option>
-                                                        <option value="1">正常</option>
-                                                        <option value="2">激活異常</option>
-                                                        <option value="8">離職</option>
-                                                        <option value="9">ロック</option>
-                                                    </select>
+                                                    <div class="col-lg-6">
+                                                     <select class="form-control width-150" th:field="*{status}">
+												        <option th:each="value : ${statusList}"
+												                th:value="${value}"
+												                th:text="${value.text}">未選択
+												        </option>
+												    </select>
                                                     <p class="color-red" th:if="${#fields.hasErrors('status')}" th:errors="*{status}">...</p>
-                                                </div>
+                                                	</div>
                                             </div>
 
                                             <div class="form-group">
@@ -142,8 +169,8 @@
 												<div class="col-lg-6">
 												<select id="select-02"class="form-control width-150" th:field="*{authorites}">
           												 <option th:each="element : ${authlist}"
-												                th:value="${element.key}"
-												                th:text="${element.value}">未選択
+												                th:value="${element}"
+												                th:text="${element.text}">未選択
 												        </option>
 												</select>
 												</div>

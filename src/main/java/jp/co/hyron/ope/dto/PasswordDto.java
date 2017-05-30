@@ -15,6 +15,10 @@ public class PasswordDto extends EmailDto {
 
     @NotEmpty
     @Length(min = 8, max = 20)
+    private String passWordTwice;
+
+    @NotEmpty
+    @Length(min = 8, max = 20)
     private String oldPassword;
 
 }

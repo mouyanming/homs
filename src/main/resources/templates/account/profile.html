@@ -40,7 +40,7 @@
 	                                	<img th:src="*{user.image == null ? '/img/noimage.jpg' :  user.image}" alt="..." >
 									</div>
 									<div class="form-group">
-									<input id="upload_file" name="upload_file" class="file-loading" type="file">
+									<input id="upload_file" name="multipartFile" class="file-loading" type="file">
 							        <input id="id" name="id" th:value="*{user.id}" type="hidden">
 					        　　　　　　　		</div>
 						    </form>
@@ -95,15 +95,8 @@
 								<div class="media-left">
 									<i class="fa fa-group fa-fw"></i>
 								</div>
-								<div class="media-body" th:switch="*{user.jsgKb}">
-                                      <h4 class="media-heading" th:case="JP">日本海隆 </h4>
-									  <h4 class="media-heading" th:case="SH">上海 </h4>
-									  <h4 class="media-heading" th:case="HZ">華 </h4>
-									  <h4 class="media-heading" th:case="BJ">北京 </h4>
-									  <h4 class="media-heading" th:case="BJ">江蘇 </h4>
-									  <h4 class="media-heading" th:case="KS">崑山 </h4>
-									  <h4 class="media-heading" th:case="WZ">外注 </h4>
-									  <h4 class="media-heading" th:case="*">所属区分未入力 </h4>
+								<div class="media-body">
+									  <h4 class="media-heading" th:text="*{user.jsgKb !=null ? user.jsgKb.text : '未入力'}">上海 </h4>
 								</div>
 							</div>
 
@@ -111,15 +104,8 @@
 								<div class="media-left">
 									<i class="fa fa-group fa-fw"></i>
 								</div>
-								<div class="media-body" th:switch="*{user.usrDept}">
-                                      <h4 class="media-heading" th:case="100">第一本部</h4>
-									  <h4 class="media-heading" th:case="200">第二本部 </h4>
-									  <h4 class="media-heading" th:case="300">第三本部 </h4>
-									  <h4 class="media-heading" th:case="400">第四本部 </h4>
-									  <h4 class="media-heading" th:case="500">第五本部 </h4>
-									  <h4 class="media-heading" th:case="600">第六本部 </h4>
-									  <h4 class="media-heading" th:case="700">第七本部 </h4>
-									  <h4 class="media-heading" th:case="*">部署未入力 </h4>
+								<div class="media-body">
+                                      <h4 class="media-heading" th:text="*{user.usrDept.text}">部署未入力</h4>
 								</div>
 							</div>
 							<div class="media">
@@ -181,12 +167,14 @@
 		<script>
 		$(document).on('ready', function () {
 			$("#upload_file").fileinput({
-	            uploadUrl: "/account/uploadimage/1", // server upload action
+	            uploadUrl: "/account/uploadimage", // server upload action
 	            uploadAsync: true,
 	            maxFileCount: 1,
 	            dropZoneEnabled: false,
 	            showPreview: false,
 	            uploadExtraData: {id: $("input[name=id]").val()},
+	            allowedFileTypes:["image"],
+	            allowedFileExtensions:['jpg', 'png'],
 	            browseLabel: '画像変更',
 	        }).on('fileuploaded', function(event, data, previewId, index) {
 	        	$(".thumbnail img").attr('src',data.response.result);

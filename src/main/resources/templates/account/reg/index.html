@@ -23,7 +23,7 @@
 					 </h3>
                     </div>
                     <div class="panel-body">
-                        <form role="form" method="post" th:action="@{/account/reg/sendmail}" th:object="${account}">
+                        <form role="form" method="post" th:action="@{/account/reg/index}" th:object="${account}">
                             <fieldset>
                                 <div class="form-group">
                                     <input class="form-control" placeholder="E-mail" name="email" type="text" th:field="*{email}" autofocus="" />
