@@ -2,11 +2,13 @@ package jp.co.hyron.ope;
 
 import javax.sql.DataSource;
 
+import jp.co.hyron.ope.storage.StorageProperties;
 import jp.co.hyron.ope.storage.StorageService;
 
 import org.h2.server.web.WebServlet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,6 +22,7 @@ import org.springframework.web.socket.server.standard.ServerEndpointExporter;
 
 @Configuration
 @EnableWebSocket
+@EnableConfigurationProperties(StorageProperties.class)
 public class ApplicationConfig implements WebSocketConfigurer {
 
     @Autowired

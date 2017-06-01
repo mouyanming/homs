@@ -24,7 +24,6 @@ public class AccountDto extends EmailDto {
 
     private String usrMb;
 
-    @NotEmpty
     private String usrNm;
 
     private short usrSex;

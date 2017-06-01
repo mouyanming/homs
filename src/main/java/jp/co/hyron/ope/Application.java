@@ -16,17 +16,13 @@
 
 package jp.co.hyron.ope;
 
-import jp.co.hyron.ope.storage.StorageProperties;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 @SpringBootApplication
 @EnableAsync
-@EnableConfigurationProperties(StorageProperties.class)
 public class Application extends WebMvcConfigurerAdapter {
 
     public static void main(String[] args) throws Exception {
