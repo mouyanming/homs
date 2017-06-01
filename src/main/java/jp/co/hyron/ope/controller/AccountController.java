@@ -1,5 +1,6 @@
 package jp.co.hyron.ope.controller;
 
+import java.nio.file.Path;
 import java.security.Principal;
 import java.util.Locale;
 import java.util.Optional;
@@ -7,6 +8,7 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import jp.co.hyron.ope.common.CommonConst;
+import jp.co.hyron.ope.common.MessageAccess;
 import jp.co.hyron.ope.common.Status;
 import jp.co.hyron.ope.dto.AccountDto;
 import jp.co.hyron.ope.dto.EmailDto;
@@ -18,15 +20,14 @@ import jp.co.hyron.ope.entity.User;
 import jp.co.hyron.ope.entity.UserMst;
 import jp.co.hyron.ope.service.MailService;
 import jp.co.hyron.ope.service.UserService;
+import jp.co.hyron.ope.storage.StorageService;
+import lombok.RequiredArgsConstructor;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -38,20 +39,23 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/account")
 public class AccountController {
 
-    @Autowired
-    private MailService mailService;
+    private final MailService mailService;
 
     @Value("${homs.rootUrl}")
     private String rootUrl;
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+
+    private final StorageService storageService;
+
+    private final MessageAccess messageAccess;
 
     @RequestMapping(value = {"/reg/index" }, method = RequestMethod.POST)
     public String sendMail(final Model model, @Valid @ModelAttribute("account") EmailDto account, BindingResult result, Locale locale) {
@@ -65,7 +69,7 @@ public class AccountController {
                 String vdCd = userService.createNewUserMstWithNotActive(email);
                 if (vdCd != null) {
                     String url = rootUrl + "/account/reg/input/" + vdCd;
-                    mailService.sendMail(email, url, locale);
+                    mailService.sendMail(email, url);
                     return "account/reg/sendmail";
                 } else {
                     result.rejectValue("email", "mail.error");
@@ -77,22 +81,22 @@ public class AccountController {
     }
 
     @RequestMapping(value = {"/reg/index" }, method = RequestMethod.GET)
-    public ModelAndView index(final Model model) {
+    public String index(final Model model) {
         model.addAttribute("account", new EmailDto());
-        return new ModelAndView("account/reg/index");
+        return "account/reg/index";
     }
 
     @RequestMapping(value = {"/reg/input/{code}" }, method = RequestMethod.GET)
-    public ModelAndView input(final Model model, @PathVariable("code") String code) {
+    public String input(final Model model, @PathVariable("code") String code) {
         UserMst usr = userService.findUserMstByVdCd(code);
         if (usr == null) {
-            model.addAttribute("result", "失敗");
+            model.addAttribute("result", messageAccess.getMessage("error.active.failure"));
         } else if (usr.getAcSts() != Status.NOTACTIVE) {
-            model.addAttribute("result", "既にアクティビティ済み");
+            model.addAttribute("result", messageAccess.getMessage("error.active.again"));
         } else {
             model.addAttribute("account", new AccountDto(usr));
         }
-        return new ModelAndView("account/reg/input");
+        return "account/reg/input";
     }
 
     @RequestMapping(value = {"/reg/confirm" }, method = RequestMethod.POST)
@@ -130,12 +134,12 @@ public class AccountController {
     @RequestMapping(value = {"/changepassword" }, method = RequestMethod.POST)
     public String changePasswordEnd(final Model model, @Valid @ModelAttribute("account") PasswordDto account, BindingResult result, Principal principal) {
         if (!result.hasErrors() && principal != null) {
-            if (!account.getPassword().equals(account.getPassWordTwice())) {
+            if (!account.getPassword().equals(account.getPasswordTwice())) {
                 result.rejectValue("passwordTwice", "error.validation.password.notequal");
             }
             boolean isUpdated = userService.updatePassword(account);
             if (!isUpdated) {
-                result.rejectValue("passwordTwice", "error.validation.password.cannotupdate");
+                result.rejectValue("oldPassword", "error.validation.password.cannotupdate");
             } else {
                 return "redirect:/";
             }
@@ -144,9 +148,9 @@ public class AccountController {
     }
 
     @RequestMapping(value = {"/reg/findmypassword" }, method = RequestMethod.GET)
-    public ModelAndView findMyPassword(final Model model) {
+    public String findMyPassword(final Model model) {
         model.addAttribute("account", new EmailDto());
-        return new ModelAndView("account/reg/findmypassword");
+        return "account/reg/findmypassword";
     }
 
     @RequestMapping(value = {"/reg/findmypassword" }, method = RequestMethod.POST)
@@ -164,7 +168,7 @@ public class AccountController {
                     } else {
                         String newPassword = userService.setNewPassword(userId);
                         if (newPassword != null) {
-                            mailService.sendPassword(userId, newPassword, locale);
+                            mailService.sendPassword(userId, newPassword);
                             return "account/reg/sendpassword";
                         } else {
                             result.rejectValue("email", "mail.error.setpassword");
@@ -178,20 +182,20 @@ public class AccountController {
 
     @PostMapping(value = {"/uploadimage" }, produces = "application/json")
     @ResponseBody
-    public JsonResult uploadImage(@Validated FileUploadDto dto, BindingResult result, @AuthenticationPrincipal UserDetails principal) {
+    public JsonResult uploadImage(@Validated FileUploadDto dto, BindingResult result, Principal principal) {
         JsonResult returnValue = new JsonResult();
         if (!result.hasErrors()) {
-            if (principal != null && principal.getUsername() != null) {
+            if (principal != null && principal.getName() != null) {
                 try {
-                    returnValue.setResult(userService.uploadImage(dto));
+                    returnValue.setResult(getImagePath(userService.uploadImage(dto, storageService)));
                 } catch (Exception e) {
-                    returnValue.setError("can not upload image file.");
+                    returnValue.setError(messageAccess.getMessage("error.image.upload"));
                 }
             } else {
-                returnValue.setError("you are not login.");
+                returnValue.setError(messageAccess.getMessage("error.notlogin"));
             }
         } else {
-            returnValue.setError("validation failture.");
+            returnValue.setError(messageAccess.getMessage("error.validation"));
         }
         return returnValue;
 
@@ -200,59 +204,72 @@ public class AccountController {
     @GetMapping("/files/{filename:.+}")
     @ResponseBody
     public ResponseEntity<Resource> serveFile(@PathVariable String filename) {
-        Resource file = userService.loadAsResource(filename);
+        Resource file = storageService.loadAsResource(filename);
         return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"").body(file);
     }
 
+    private String getImagePath(String imageName) {
+        Path path = storageService.load(imageName);
+        String imagePath = MvcUriComponentsBuilder.fromMethodName(AccountController.class, "serveFile", path.getFileName().toString()).build().toString();
+        return imagePath;
+    }
+
     @RequestMapping(value = {"/upload" }, method = RequestMethod.GET)
-    public ModelAndView upload() {
-        return new ModelAndView("account/upload");
+    public String upload() {
+        return "account/upload";
     }
 
     @GetMapping(value = "/profile")
-    public ModelAndView profile(final Model model, Principal principal) {
-        model.addAttribute("user", userService.getUserMstByEmail(principal.getName()));
-        return new ModelAndView("account/profile");
+    public String profile(final Model model, Principal principal) {
+        UserMst user = userService.getUserMstByEmail(principal.getName());
+        if (user != null && user.getImage() != null) {
+            user.setImage(getImagePath(user.getImage()));
+        }
+        model.addAttribute("user", user);
+        return "account/profile";
     }
 
     @Secured({CommonConst.ROLE_ADMIN })
     @GetMapping(value = "/list")
-    public ModelAndView list(final Model model) {
+    public String list(final Model model) {
         model.addAttribute("list", userService.getAllUserMst());
-        return new ModelAndView("account/list");
+        return "account/list";
     }
 
     @Secured({CommonConst.ROLE_ADMIN })
     @RequestMapping(value = "/info/{id}")
-    public ModelAndView userInfo(@PathVariable("id") int id, final Model model) {
-        model.addAttribute("user", userService.getUserMstById(id));
-        return new ModelAndView("account/profile");
+    public String userInfo(@PathVariable("id") int id, final Model model) {
+        UserMst user = userService.getUserMstById(id);
+        if (user != null && user.getImage() != null) {
+            user.setImage(getImagePath(user.getImage()));
+        }
+        model.addAttribute("user", user);
+        return "account/profile";
     }
 
     @Secured({CommonConst.ROLE_ADMIN })
     @GetMapping(value = "/edit/{id}")
-    public ModelAndView edit(@PathVariable("id") int id, final Model model) {
+    public String edit(@PathVariable("id") int id, final Model model) {
         model.addAttribute("userDto", userService.getUserDtoById(id));
         model.addAttribute("affiliations", CommonConst.affilications);
         model.addAttribute("authlist", CommonConst.authorites);
         model.addAttribute("statusList", CommonConst.statusList);
         model.addAttribute("positions", CommonConst.positions);
         model.addAttribute("departments", CommonConst.departments);
-
-        return new ModelAndView("account/edit");
+        return "account/edit";
     }
 
     @Secured({CommonConst.ROLE_ADMIN })
     @PostMapping(value = "/edit")
-    public ModelAndView editPost(final Model model, @Valid @ModelAttribute UserDto userDto, BindingResult result, Locale locale) {
+    public String editPost(final Model model, @Valid @ModelAttribute UserDto userDto, BindingResult result, Locale locale) {
         if (!result.hasFieldErrors()) {
-            boolean isOk = userService.updateAccount(userDto);
+            boolean isOk = userService.updateUserInfo(userDto);
             if (isOk) {
-                return new ModelAndView("redirect:/account/list");
+                return "redirect:/account/list";
             } else {
                 result.rejectValue("email", "error.email");
             }
         }
-        return new ModelAndView("account/edit");
+        return "account/edit";
     }
 }

@@ -1949,6 +1949,7 @@
             };
             fnSuccess = function (data, textStatus, jqXHR) {
                 var pid = self.showPreview && $thumb.attr('id') ? $thumb.attr('id') : previewId;
+                console.log("data = " + data);
                 outData = self._getOutData(jqXHR, data);
                 $.extend(true, params, outData);
                 setTimeout(function () {

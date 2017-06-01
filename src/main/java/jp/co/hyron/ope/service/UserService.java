@@ -1,17 +1,17 @@
 package jp.co.hyron.ope.service;
 
-import java.nio.file.Path;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
+import jp.co.hyron.ope.common.CommonConst;
 import jp.co.hyron.ope.common.CommonUtil;
 import jp.co.hyron.ope.common.ConvertDtoToEntity;
 import jp.co.hyron.ope.common.Status;
-import jp.co.hyron.ope.controller.AccountController;
 import jp.co.hyron.ope.dto.AccountDto;
 import jp.co.hyron.ope.dto.FileUploadDto;
 import jp.co.hyron.ope.dto.PasswordDto;
@@ -21,33 +21,23 @@ import jp.co.hyron.ope.entity.UserMst;
 import jp.co.hyron.ope.repository.UserMstRepository;
 import jp.co.hyron.ope.repository.UserRepository;
 import jp.co.hyron.ope.storage.StorageService;
+import lombok.RequiredArgsConstructor;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
-    @Autowired
-    private UserRepository userRepository;
 
-    @Autowired
-    private UserMstRepository userMstRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final UserMstRepository userMstRepository;
 
-    @Autowired
-    private final StorageService storageService;
-
-    @Autowired
-    public UserService(StorageService storageService) {
-        this.storageService = storageService;
-    }
+    private final PasswordEncoder passwordEncoder;
 
     /**
      * ログイン情報取得
@@ -72,7 +62,7 @@ public class UserService {
      * @return
      */
     public Collection<User> getAllUsers() {
-        return userRepository.findAll(new Sort("email"));
+        return userRepository.findAll(new Sort(CommonConst.USERNAME_EMAIL));
     }
 
     /**
@@ -98,6 +88,7 @@ public class UserService {
      * @param dto
      * @return
      */
+    @Transactional(readOnly = true)
     public User create(AccountDto dto) {
         UserMst userMst = userMstRepository.findUsrByUsrId(dto.getEmail());
         if (userMst == null) {
@@ -131,9 +122,6 @@ public class UserService {
         Optional<User> user = this.getUserByEmail(dto.getEmail());
         if (user.isPresent()) {
             User usr = user.get();
-            if (!usr.getPassword().equals(dto.getOldPassword())) {
-                return false;
-            }
             usr.setPassword(passwordEncoder.encode(dto.getPassword()));
             this.update(usr);
             return true;
@@ -204,53 +192,64 @@ public class UserService {
      * @param isAdmin
      * @return
      */
-    public String uploadImage(FileUploadDto dto) {
+    public String uploadImage(FileUploadDto dto, StorageService storageService) {
         MultipartFile file = dto.getMultipartFile();
         UserMst usr = userMstRepository.findOne(dto.getId());
         if (usr != null) {
             String email = usr.getUsrId();
             Date now = new Date();
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+            SimpleDateFormat sdf = new SimpleDateFormat(CommonConst.YYYY_M_MDD_H_HMMSS);
             int pos = email.indexOf("@");
-            String filename = email.substring(0, pos == 0 ? email.length() : pos) + "_" + sdf.format(now) + ".jpg";
+            String filename = email.substring(0, pos < 0 ? email.length() : pos) + "_" + sdf.format(now) + CommonConst.JPG;
             try {
                 storageService.store(file, filename);
-                storageService.delete(usr.getImage());
+                if (usr.getImage() != null && !"".equals(usr.getImage())) {
+                    storageService.delete(usr.getImage());
+                }
                 usr.setImage(filename);
                 userMstRepository.saveAndFlush(usr);
             } catch (Exception e) {
-                throw e;
+                return null;
             }
-            return getImagePath(usr.getImage());
+            return usr.getImage();
         }
         return null;
 
     }
 
-    private String getImagePath(String imageName) {
-        Path path = storageService.load(imageName);
-        String imagePath = MvcUriComponentsBuilder.fromMethodName(AccountController.class, "serveFile", path.getFileName().toString()).build().toString();
-        return imagePath;
-    }
-
-    public Resource loadAsResource(String filename) {
-        Resource file = storageService.loadAsResource(filename);
-        return file;
-    }
-
+    /**
+     * emailを使ってUserMst情報取得
+     * @param email
+     * @return
+     */
     public UserMst getUserMstByEmail(String email) {
         return userMstRepository.findUsrByUsrId(email);
     }
 
+    /**
+     * 全てUserMst情報を取得
+     * @return
+     */
     public List<UserMst> getAllUserMst() {
-        return userMstRepository.findAll(new Sort("id"));
+        return userMstRepository.findAll(new Sort("id")).stream().filter(p -> !p.getUsrId().equals("admin")).collect(Collectors.toList());
     }
 
+    /**
+     * IDを使ってUserMst情報取得
+     * @param id
+     * @return
+     */
     public UserMst getUserMstById(int id) {
         return userMstRepository.findOne(id);
     }
 
-    public boolean updateAccount(UserDto dto) {
+    /**
+     * ユーザ情報更新
+     * @param dto
+     * @return
+     */
+    @Transactional
+    public boolean updateUserInfo(UserDto dto) {
         boolean returnValue = true;
         try {
             UserMst usr = userMstRepository.findOne(dto.getId());
@@ -275,13 +274,14 @@ public class UserService {
         return returnValue;
     }
 
+    /**
+     * UserDto作成
+     * @param id
+     * @return
+     */
     public UserDto getUserDtoById(int id) {
         UserMst user = userMstRepository.findOne(id);
         Optional<User> result = this.getUserByEmail(user.getUsrId());
-        String image = user.getImage();
-        if (image != null && !"".equals(image)) {
-            user.setImage(getImagePath(user.getImage()));
-        }
         UserDto dto = new UserDto(user);
         if (result.isPresent()) {
             dto.setAuthorites(result.get().getRole());

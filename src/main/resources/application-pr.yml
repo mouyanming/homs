@@ -1,0 +1,8 @@
+spring:
+  thymeleaf.cache: true
+  jpa:
+    show-sql: false
+storage:
+  location: /opt/homs/img
+homs:
+  rootUrl: http://lrl.dip.jp

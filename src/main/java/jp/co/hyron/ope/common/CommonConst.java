@@ -26,7 +26,13 @@ public class CommonConst {
     public static final String ROLE_SYUTYO = "ROLE_SYUTYO";
 
     // アカウントロックをかける連続認証失敗回数の閾値
-    public static final int loginAttemptsThreshold = 5;
+    public static final int LOGIN_ATTEMPTS_THRESHOLD = 5;
+
+    public static final String USERNAME_EMAIL = "email";
+
+    public static final String JPG = ".jpg";
+
+    public static final String YYYY_M_MDD_H_HMMSS = "yyyyMMddHHmmss";
 
     // 所属区分一覧
     public static final List<Affiliation> affilications = Arrays.asList(Affiliation.values());

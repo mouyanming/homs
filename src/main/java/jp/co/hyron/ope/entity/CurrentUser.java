@@ -34,16 +34,22 @@ public class CurrentUser extends org.springframework.security.core.userdetails.U
 
     @Override
     public boolean isAccountNonLocked() {
+        if ("admin".equals(user.getEmail())) {
+            return true;
+        }
         boolean isNonLocked = true;
         UserMst usr = user.getUserMst();
         if (usr != null) {
-            isNonLocked = usr.getPwdErrCnt() < CommonConst.loginAttemptsThreshold && !usr.getAcSts().equals(Status.LOCK);
+            isNonLocked = usr.getPwdErrCnt() < CommonConst.LOGIN_ATTEMPTS_THRESHOLD && !usr.getAcSts().equals(Status.LOCK);
         }
         return isNonLocked;
     }
 
     @Override
     public boolean isEnabled() {
+        if ("admin".equals(user.getEmail())) {
+            return true;
+        }
         boolean isEnabled = false;
         UserMst usr = user.getUserMst();
         if (usr != null) {

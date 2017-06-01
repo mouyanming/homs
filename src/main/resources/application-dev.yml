@@ -1,4 +1,8 @@
 spring:
-    thymeleaf.cache: false
-    jpa:
-      show-sql: false
+  thymeleaf.cache: false
+  jpa:
+    show-sql: false
+storage:
+  location: C:\img
+homs:
+  rootUrl: http://localhost:8080

@@ -1,5 +1,6 @@
 package jp.co.hyron.ope.secure;
 
+import jp.co.hyron.ope.common.CommonConst;
 import jp.co.hyron.ope.common.Role;
 import jp.co.hyron.ope.dto.AccountDto;
 import jp.co.hyron.ope.service.UserService;
@@ -58,7 +59,7 @@ public class SecurityAdapter extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests().antMatchers("/account/reg/**").permitAll().anyRequest().authenticated();
-        http.formLogin().loginPage("/login").defaultSuccessUrl("/index.html").failureUrl("/login?error").usernameParameter("email").permitAll();
+        http.formLogin().loginPage("/login").defaultSuccessUrl("/index.html").failureUrl("/login?error").usernameParameter(CommonConst.USERNAME_EMAIL).permitAll();
         http.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login?logout").deleteCookies("JSESSIONID").invalidateHttpSession(true).permitAll();
         http.rememberMe().tokenRepository(jdbcTokenRepository).tokenValiditySeconds(604800);// remember for a week. ( 1 * 60 * 60 * 24 * 7 ) sec
         http.authorizeRequests().antMatchers("/console/**").permitAll();

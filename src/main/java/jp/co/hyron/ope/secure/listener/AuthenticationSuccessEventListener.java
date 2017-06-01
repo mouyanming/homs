@@ -18,7 +18,7 @@ public class AuthenticationSuccessEventListener implements ApplicationListener<A
         String email = event.getAuthentication().getName();
         UserMst userMst = userMstRepository.findUsrByUsrId(email);
         if (userMst != null) {
-            if (userMst.getPwdErrCnt() < CommonConst.loginAttemptsThreshold) {
+            if (userMst.getPwdErrCnt() < CommonConst.LOGIN_ATTEMPTS_THRESHOLD) {
                 userMst.setPwdErrCnt((short) 0);
                 userMstRepository.saveAndFlush(userMst);
             }

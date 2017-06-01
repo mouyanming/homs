@@ -35,7 +35,7 @@ public class LoginFailureEventListenter implements ApplicationListener<Authentic
         if (user != null) {
             user.setPwdErrCnt((short) (user.getPwdErrCnt() + 1));
             failedLoginAttempts = user.getPwdErrCnt();
-            if (failedLoginAttempts >= CommonConst.loginAttemptsThreshold) {
+            if (failedLoginAttempts >= CommonConst.LOGIN_ATTEMPTS_THRESHOLD) {
                 user.setAcSts(Status.LOCK);
             }
             userMstRepository.saveAndFlush(user);

@@ -27,7 +27,4 @@ spring:
     multipart:
       max-file-size: 4MB
       max-request-size: 4MB
-homs:
-  rootUrl: http://localhost:8080
-
 logging.level.org.springframework.security: INFO

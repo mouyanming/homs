@@ -1,28 +1,26 @@
 package jp.co.hyron.ope.service;
 
-import java.util.Locale;
+import jp.co.hyron.ope.common.MessageAccess;
+import lombok.RequiredArgsConstructor;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class MailService {
-    @Autowired
-    private MailSender mailSender;
+    private final MailSender mailSender;
 
-    @Autowired
-    private MessageSource messageSource;
+    private final MessageAccess messageAccess;
 
     @Async
     // 別スレッドで実行される
-    public void sendMail(String mailAddr, String url, Locale locale) {
+    public void sendMail(String mailAddr, String url) {
         SimpleMailMessage msg = new SimpleMailMessage();
         msg.setTo(mailAddr);
-        msg.setSubject(messageSource.getMessage("mail.subject", null, locale));
+        msg.setSubject(messageAccess.getMessage("mail.subject"));
         StringBuffer sb = new StringBuffer();
         sb.append("ご利用ありがとうございます。").append(System.getProperty("line.separator"));
         sb.append("HOMS登録メールのご案内です。 ").append(System.getProperty("line.separator"));
@@ -39,10 +37,10 @@ public class MailService {
 
     @Async
     // 別スレッドで実行される
-    public void sendPassword(String mailAddr, String newPassword, Locale locale) {
+    public void sendPassword(String mailAddr, String newPassword) {
         SimpleMailMessage msg = new SimpleMailMessage();
         msg.setTo(mailAddr);
-        msg.setSubject(messageSource.getMessage("mail.subject.setnewpassword", null, locale));
+        msg.setSubject(messageAccess.getMessage("mail.subject.setnewpassword"));
         StringBuffer sb = new StringBuffer();
         sb.append("パスワード更新しました。").append(System.getProperty("line.separator"));
         sb.append("新しいパスワードは下記となります ").append(System.getProperty("line.separator"));
