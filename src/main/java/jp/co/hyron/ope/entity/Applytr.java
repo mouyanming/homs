@@ -12,6 +12,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import jp.co.hyron.ope.dto.ApplyDto;
+
 /**
  * The persistent class for the applytrs database table.
  */
@@ -145,6 +147,33 @@ public class Applytr implements Serializable {
 
     public void setUsrId(String usrId) {
         this.usrId = usrId;
+    }
+    
+    public void convertToApply(ApplyDto dto) {
+        // 変更あるかどうかチェック
+        if (this.usrId == null || "".equals(this.usrId)) {
+            this.usrId = dto.getUserId();
+        }
+        if (dto.getApKb() != null && !"".equals(dto.getApKb())) {
+            this.apKb = dto.getApKb();
+        }
+//        if (this.apsNo != dto.getApsNo()) {
+//            this.apsNo = dto.getApsNo();
+//        }
+        if (this.apCnt != dto.getApCnt()) {
+            this.apCnt = dto.getApCnt();
+        }
+        if (this.dlSts != dto.getDlSts()) {
+            this.dlSts = dto.getDlSts();
+        }
+        if (this.ddDt != dto.getDdDt()) {
+            this.ddDt = dto.getDdDt();
+        }
+        
+        this.apTm = new Timestamp(System.currentTimeMillis());
+        
+        this.updTm = new Timestamp(System.currentTimeMillis());
+
     }
 
 }

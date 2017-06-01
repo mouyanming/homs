@@ -8,10 +8,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 /**
- * @author li_x
+ * @author mou_y
  */
 @Repository
 public interface ApplytrRepository extends JpaRepository<Applytr, Integer> {
 
-    public List<Applytr> findListByUsrId(String usrId);
+    public List<Applytr> findListByUsrId(String userId);
 }
