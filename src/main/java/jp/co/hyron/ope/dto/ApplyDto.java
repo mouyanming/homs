@@ -3,10 +3,12 @@ package jp.co.hyron.ope.dto;
 import java.sql.Timestamp;
 import java.util.Date;
 
+import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 
 import jp.co.hyron.ope.entity.Applytr;
 
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -20,20 +22,23 @@ import lombok.NoArgsConstructor;
 public class ApplyDto {
 	
 	/** 連番 */
-    @NotNull
+	@Id
+	@NotNull
     private int apsNo;
     
     /** 申請者 */
     @NotEmpty
-    private String userId;
+    private String usrId;
     
     /** 申請時間 */
     private Timestamp apTm;
 
     /** 申請種別区部 "Z":在職証明 "S": 収入証明 */
+    @NotEmpty
     private String apKb;
 
     /** 申請内容 */
+    @Length(min = 0, max = 150)
     private String apCnt;
     
     /** 承認者（usr_id） */
@@ -57,7 +62,7 @@ public class ApplyDto {
     
     public ApplyDto(Applytr applytr) {
     	this.apsNo = applytr.getApsNo();
-    	this.userId = applytr.getUsrId();
+    	this.usrId = applytr.getUsrId();
     	this.apTm = applytr.getApTm();
     	this.apKb = applytr.getApKb();
     	this.apCnt = applytr.getApCnt();

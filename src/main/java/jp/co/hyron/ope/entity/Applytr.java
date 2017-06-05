@@ -6,6 +6,8 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -150,25 +152,25 @@ public class Applytr implements Serializable {
     }
     
     public void convertToApply(ApplyDto dto) {
-        // 変更あるかどうかチェック
-        if (this.usrId == null || "".equals(this.usrId)) {
-            this.usrId = dto.getUserId();
+    	if (this.usrId == null || "".equals(this.usrId)) {
+            this.usrId = dto.getUsrId();
         }
-        if (dto.getApKb() != null && !"".equals(dto.getApKb())) {
+    	
+    	if (dto.getApKb() != null && !"".equals(dto.getApKb())) {
             this.apKb = dto.getApKb();
         }
-//        if (this.apsNo != dto.getApsNo()) {
-//            this.apsNo = dto.getApsNo();
-//        }
+        
         if (this.apCnt != dto.getApCnt()) {
             this.apCnt = dto.getApCnt();
         }
+        
         if (this.dlSts != dto.getDlSts()) {
             this.dlSts = dto.getDlSts();
+        }else{
+        	this.dlSts = 0;
         }
-        if (this.ddDt != dto.getDdDt()) {
-            this.ddDt = dto.getDdDt();
-        }
+        
+        this.ddDt = new Date();
         
         this.apTm = new Timestamp(System.currentTimeMillis());
         
