@@ -14,4 +14,8 @@ import org.springframework.stereotype.Repository;
 public interface ApplytrRepository extends JpaRepository<Applytr, Integer> {
 
     public List<Applytr> findListByUsrId(String userId);
+    
+    public List<Applytr> findListByApLet(String userId);
+    
+    public Applytr findByApsNo(int apsNo);
 }

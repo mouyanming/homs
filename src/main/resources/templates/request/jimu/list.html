@@ -58,13 +58,14 @@
                                             <th>処理状態</th>
                                             <th>発行処理日</th>
                                             <th>コメント</th>
+                                            <th></th>
 										</tr>
                                     </thead>
                                     <tbody>
-                                        <tr th:each="result : ${results}" class="odd gradeX">
-                                            <td th:text="${result.aspNo}"></td>
+                                        <tr th:each="result : ${results}" class="odd gradeX" >
+                                            <td th:text="${result.apsNo}"></td>
                                             <td th:text="${result.usrId}">...</td>
-                                            <td th:text="${result.apTm}">...</td>
+                                            <td th:text="${#dates.format(result.apTm, 'yyyy/MM/dd HH:mm:ss')}">...</td>
                                             <td th:switch="${result.apKb}">
                                               <p th:case="Z">在職証明</p>
 											  <p th:case="S">収入証明</p>
@@ -80,12 +81,12 @@
                                             </td>
                                             <td th:text="${result.ddDt}"></td>
                                             <td th:text="${result.dlCmt}"></td>
+                                            <td><a th:href="@{edit(id=${result.apsNo})}" ><button type="submit" class="btn btn-primary">編集</button></a></td>
                                         </tr>
 
                                     </tbody>
                                 </table>
                             </div>
-
                         </div>
                         <!-- /.panel-body -->
                     </div>

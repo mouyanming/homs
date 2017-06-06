@@ -3,7 +3,6 @@ package jp.co.hyron.ope.dto;
 import java.sql.Timestamp;
 import java.util.Date;
 
-import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 
 import jp.co.hyron.ope.entity.Applytr;
@@ -22,7 +21,6 @@ import lombok.NoArgsConstructor;
 public class ApplyDto {
 	
 	/** 連番 */
-	@Id
 	@NotNull
     private int apsNo;
     

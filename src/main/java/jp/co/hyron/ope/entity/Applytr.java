@@ -26,6 +26,7 @@ public class Applytr implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "aps_no", unique = true, nullable = false)
     private int apsNo;
 
@@ -152,6 +153,7 @@ public class Applytr implements Serializable {
     }
     
     public void convertToApply(ApplyDto dto) {
+    	
     	if (this.usrId == null || "".equals(this.usrId)) {
             this.usrId = dto.getUsrId();
         }

@@ -38,7 +38,7 @@
                                     <div class="text-muted bootstrap-admin-box-title">編集項目</div>
                                 </div>
                                 <div class="bootstrap-admin-no-table-panel-content bootstrap-admin-panel-content collapse in">
-                                    <form class="form-horizontal"  th:action="@{/applytr/applytrAdd}" method="post"  th:object="${applyDto}"  >
+                                    <form class="form-horizontal"  th:action="@{add}" method="post"  th:object="${applyDto}"  >
                                         <fieldset>
                                            	<input type="hidden"  id="usrId" name="userId" th:field="*{usrId}" />
                                             <div class="form-group">
