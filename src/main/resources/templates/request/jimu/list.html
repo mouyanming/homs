@@ -66,19 +66,11 @@
                                             <td th:text="${result.apsNo}"></td>
                                             <td th:text="${result.usrId}">...</td>
                                             <td th:text="${#dates.format(result.apTm, 'yyyy/MM/dd HH:mm:ss')}">...</td>
-                                            <td th:switch="${result.apKb}">
-                                              <p th:case="Z">在職証明</p>
-											  <p th:case="S">収入証明</p>
-                                            </td>
+                                            <td th:text="${result.apKbName}">...</td>
                                             <td th:text="${result.apCnt}"></td>
                                             <td th:text="${result.apLet}"></td>
                                             <td th:text="${result.dlUsrId}"></td>
-                                            <td th:switch="${result.dlSts}">
-                                              <p th:case="0">初期状態</p>
-											  <p th:case="1">処理中</p>
-											  <p th:case="8">差戻</p>
-											  <p th:case="9">処理済み</p>
-                                            </td>
+                                            <td th:text="${result.dlStsName}">...</td>
                                             <td th:text="${result.ddDt}"></td>
                                             <td th:text="${result.dlCmt}"></td>
                                             <td><a th:href="@{edit(id=${result.apsNo})}" ><button type="submit" class="btn btn-primary">編集</button></a></td>

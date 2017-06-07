@@ -208,6 +208,6 @@ public class User implements UserDetails {
     }
 
     public boolean isRoleUser(String role) {
-        return this.authorities == role;
+        return this.authorities.equals(role);
     }
 }

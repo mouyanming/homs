@@ -10,6 +10,9 @@
 
     <!-- DataTables Responsive CSS -->
     <link th:href="@{/admin/bower_components/datatables-responsive/css/dataTables.responsive.css}" rel="stylesheet" />
+    
+    <!-- Datepicker CSS -->
+    <link th:href="@{/vendors/bootstrap-datepicker/css/datepicker.css}" href="/vendors/bootstrap-datepicker/css/datepicker.css" rel="stylesheet" media="screen" >
 
 </head>
 
@@ -21,7 +24,7 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="page-header bootstrap-admin-content-title">
-                                <h2>ユーザー情報　更新</h2>
+                                <h2>事務変更</h2>
                             </div>
                         </div>
                     </div>
@@ -35,94 +38,35 @@
                                     <div class="text-muted bootstrap-admin-box-title">編集項目</div>
                                 </div>
                                 <div class="bootstrap-admin-no-table-panel-content bootstrap-admin-panel-content collapse in">
-                                    <form class="form-horizontal"  th:action="@{/user/edit}" method="post"  th:object="${userDto}"  >
+                                    <form class="form-horizontal"  th:action="@{add}" method="post"  th:object="${applyDto}"  >
                                         <fieldset>
                                             <div class="form-group">
-                                                <label class="col-lg-3 control-label" for="select01"><font class="font-red">※</font>ユーザー名</label>
-                                                <div class="col-lg-6">
-                                                    <input type="text" class="form-control col-md-6" id="userId" name="userId" th:field="*{userId}"  maxlength="50" readonly="readonly" />
-                                                    <p class="color-red" th:if="${#fields.hasErrors('userId')}" th:errors="*{userId}">...</p>
-                                                </div>
+                                                <label class="col-lg-3 control-label" for="select01">事務種別</label>
+                                                <p th:text="*{apKb}">...</p>
                                             </div>
                                             <div class="form-group">
-                                                <label class="col-lg-3 control-label" for="select01"><font class="font-red">※</font>パスワード</label>
-                                                <div class="col-lg-6">
-                                                    <input type="password" class="form-control col-md-6" id="passWord" name="passWord" th:field="*{passWord}" maxlength="15" />
-                                                    <p class="color-red" th:if="${#fields.hasErrors('passWord')}" th:errors="*{passWord}">...</p>
+                                                <label class="col-lg-3 control-label" for="select01">事務内容</label>
+                                                <div class="col-lg-6">     
+                                                    <textarea id="apCnt" class="form-control col-md-6　datepicker date-control" th:field="*{apCnt}" maxlength="150" cols="50" rows="4" >…</textarea>
+                                                    <p class="color-red" th:if="${#fields.hasErrors('apCnt')}" th:errors="*{apCnt}">...</p>
                                                 </div>
+                                            </div>
+											<div class="form-group">
+                                                <label class="col-lg-3 control-label" for="select01">承認者</label>
+                                                <p th:text="*{apLet}">...</p>
                                             </div>
                                             <div class="form-group">
-                                                <label class="col-lg-3 control-label" for="select01"><font class="font-red">※</font>パスワード（再入力）</label>
-                                                <div class="col-lg-6">
-                                                    <input type="password" class="form-control col-md-6" id="passWordTwice" name="passWordTwice" th:field="*{passWordTwice}" maxlength="15" />
-                                                    <p class="color-red" th:if="${#fields.hasErrors('passWordTwice')}" th:errors="*{passWordTwice}">...</p>
-                                                </div>
+                                                <label class="col-lg-3 control-label" for="select01">処理者</label>
+                                                <p th:text="*{dlUsrId}">...</p>
                                             </div>
                                             <div class="form-group">
-                                                <label class="col-lg-3 control-label" for="select01"><font class="font-red">※</font>表示名</label>
-                                                <div class="col-lg-6">
-                                                    <input type="text" class="form-control col-md-6" id="usrNm" name="usrNm" th:field="*{usrNm}" maxlength="15" readonly="readonly"/>
-                                                    <p class="color-red" th:if="${#fields.hasErrors('usrNm')}" th:errors="*{usrNm}">...</p>
-                                                </div>
+                                                <label class="col-lg-3 control-label" for="select01">処理状態</label>
+                                                <p th:text="*{dlSts}">...</p>
                                             </div>
-                                            <div class="form-group">
-                                                <label class="col-lg-3 control-label" for="select01">誕生日</label>
-                                                <div class="col-lg-6">
-                                                    <input type="text" class="form-control col-md-6　datepicker date-control" id="usrBth" name="usrBth" th:field="*{usrBth}" maxlength="15" />
-                                                    <p class="color-red" th:if="${#fields.hasErrors('usrBth')}" th:errors="*{usrBth}">...</p>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="col-lg-3 control-label" for="select01">携帯番号</label>
-                                                <div class="col-lg-6">
-                                                    <input type="text" class="form-control col-md-6" id="usrMb" name="usrMb" th:field="*{usrMb}" maxlength="15" />
-                                                    <p class="color-red" th:if="${#fields.hasErrors('usrMb')}" th:errors="*{usrMb}">...</p>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="col-lg-3 control-label" for="select01">会社Email</label>
-                                                <div class="col-lg-6">
-                                                    <input type="text" class="form-control col-md-6" id="usrMl" name="usrMl" th:field="*{usrMl}" maxlength="50" />
-                                                    <p class="color-red" th:if="${#fields.hasErrors('usrMl')}" th:errors="*{usrMl}">...</p>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="col-lg-3 control-label" for="optionsCheckbox"><font class="font-red"></font>性別</label>
-                                                <div class="col-lg-8">
-                                                    <label class="uniform">
-                                                        <input class="uniform_on" type="radio" name="usrSex" id=usrSex checked value="1" th:field="*{usrSex}" readonly="readonly"> 男性
-                                                    </label>
-                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                    <label class="uniform">
-                                                        <input class="uniform_on" type="radio" name="usrSex" id="usrSex" value="0" th:field="*{usrSex}" readonly="readonly"> 女性
-                                                    </label>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="col-lg-3 control-label" for="select01">所属区分</label>
-                                                <div class="col-lg-6">
-                                                    <select id="jsgKb" th:field="*{jsgKb}" class="chzn-select form-control col-md-6" disabled>
-                                                        <option value="">未選択</option>
-                                                        <option value="J" >日本海隆</option>
-                                                        <option value="S">上海</option>
-                                                        <option value="G">外注</option>
-                                                    </select>
-                                                    <p class="color-red" th:if="${#fields.hasErrors('jsgKb')}" th:errors="*{jsgKb}">...</p>
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group">
-                                                <label class="col-lg-3 control-label" for="select01">入社日</label>
-                                                <div class="col-lg-6">
-                                                    <input type="text" class="form-control col-md-6　datepicker date-control" id="epDt" name="epDt" th:field="*{epDt}" maxlength="15" readonly="readonly"/><font class="font-red">※日本海隆のみ</font>
-                                                    <p class="color-red" th:if="${#fields.hasErrors('epDt')}" th:errors="*{epDt}">...</p>
-                                                </div>
-                                            </div>
-
                                             <hr/>
                                             <div align="right">
-                                                <button type="submit" class="btn btn-primary" >　　更　新　　</button>
-                                                <button class="btn btn-default" type="button" onclick="window.location.href='/user/users.html'">　取　消　</button>
+                                                <button type="submit" class="btn btn-primary">　　登　録　　</button>　　　
+                                                <button type="button" class="btn btn-default" id="clear">　クリア　</button>
                                             </div>
                                         </fieldset>
                                     </form>
@@ -131,9 +75,7 @@
                         </div>
                     </div>
                 </div>
-             <div th:if="${errMessage}" class="col-lg-12" id = "alertMessage">
-                  <div class="alert alert-danger bootstrap-admin-alert"><button type="button" class="close" data-dismiss="alert">×</button><p th:text="${errMessage}"></p></div>
-             </div>
+         
          </div>
 
         </div>
@@ -143,11 +85,16 @@
     <!-- DataTables JavaScript -->
     <script th:src="@{/admin/bower_components/datatables/media/js/jquery.dataTables.min.js}"></script>
     <script th:src="@{/admin/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js}"></script>
+    <script th:src="@{/vendors/bootstrap-datepicker/js/bootstrap-datepicker.js}" type="text/javascript" src="/vendors/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
 
     <!-- Page-Level Demo Scripts - Tables - Use for reference -->
     <script>
-    $(function() {
-        $("#masterManageId").addClass("active");
+    $(document).ready(function() {
+        $('#dataTables-example').DataTable({
+                responsive: true
+        });
+        $('#usrBth').datepicker();
+        $('#epDt').datepicker();
     });
     </script>
 </div>
