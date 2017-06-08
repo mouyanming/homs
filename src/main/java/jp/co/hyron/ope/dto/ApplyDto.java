@@ -3,8 +3,6 @@ package jp.co.hyron.ope.dto;
 import java.sql.Timestamp;
 import java.util.Date;
 
-import javax.validation.constraints.NotNull;
-
 import jp.co.hyron.ope.common.AffairStatusEnum;
 import jp.co.hyron.ope.common.AffairsEnum;
 import jp.co.hyron.ope.entity.Applytr;
@@ -23,8 +21,7 @@ import lombok.NoArgsConstructor;
 public class ApplyDto {
 	
 	/** 連番 */
-	@NotNull
-    private int apsNo;
+    private Integer apsNo;
     
     /** 申請者 */
     @NotEmpty

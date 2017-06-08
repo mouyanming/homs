@@ -17,5 +17,5 @@ public interface ApplytrRepository extends JpaRepository<Applytr, Integer> {
     
     public List<Applytr> findListByApLet(String userId);
     
-    public Applytr findByApsNo(int apsNo);
+    public Applytr findByApsNo(Integer apsNo);
 }

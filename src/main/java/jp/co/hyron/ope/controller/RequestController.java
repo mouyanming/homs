@@ -1,5 +1,6 @@
 package jp.co.hyron.ope.controller;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +18,9 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -29,13 +32,14 @@ public class RequestController {
     @Autowired
     private ApplytrRepository applytrRepository;
     
-    private List<Applytr> applytrList = new ArrayList<Applytr>();
+    private List<Applytr> applytrList;
     
-    private List<ApplyDto> applyDtoList = new ArrayList<ApplyDto>();
+    private List<ApplyDto> applyDtoList;
 
     @RequestMapping(value = {"/jimu/list" })
     public ModelAndView jlist(final Model model, @AuthenticationPrincipal User loginUser) {
-
+    	applytrList = new ArrayList<Applytr>();
+    	applyDtoList = new ArrayList<ApplyDto>();
         if (loginUser != null && (loginUser.isRoleUser(CommonConst.DEF_AUTHOR_ROLE_JIMU) || loginUser.isRoleUser(CommonConst.DEF_AUTHOR_ROLE_ADMIN))) {
         	applytrList = applytrRepository.findAll();
         	for(Applytr applytr : applytrList){
@@ -59,7 +63,8 @@ public class RequestController {
     @Secured({CommonConst.DEF_AUTHOR_ROLE_ADMIN })
     @RequestMapping(value = "/jimu/add", method = RequestMethod.GET)
     public ModelAndView applytrAdd(final Model model, @AuthenticationPrincipal User loginUser) {
-		Applytr applytr = new Applytr();
+		System.out.println("ModelAndView applytrAdd");
+    	Applytr applytr = new Applytr();
 		applytr.setUsrId(loginUser.getUserId());
         model.addAttribute("applyDto", applytr);
         return new ModelAndView("request/jimu/add");
@@ -68,19 +73,22 @@ public class RequestController {
 	@Secured({CommonConst.DEF_AUTHOR_ROLE_ADMIN })
     @RequestMapping(value = "/jimu/add", method = RequestMethod.POST)
     public String applytrAdd(@Valid ApplyDto apply, BindingResult result, final Model model) {
+		System.out.println("String applytrAdd");
 		if (!result.hasErrors()) {
         	Applytr applytr = new Applytr();
+        	apply.setApsNo(0);
         	applytr.convertToApply(apply);
         	applytrRepository.saveAndFlush(applytr);
-            return "request/jimu/list";
+            return "redirect:/request/jimu/list";
         } else {
+        	System.out.println("result.hasErrors()="+result.getErrorCount());
             return "request/jimu/add";
         }
     }
 	
-	@RequestMapping(value = {"/edit/{id}" }, method = RequestMethod.GET)
-    public ModelAndView applytrEdit(@PathVariable("id") int id, final Model model, @AuthenticationPrincipal User loginUser) {
-		System.out.println("applytrEdit");
+	@GetMapping(value = "/jimu/edit/{id}")
+    public String applytrEdit(@PathVariable("id") Integer id, final Model model, @AuthenticationPrincipal User loginUser) {
+		System.out.println("ModelAndView applytrEdit");
 		if (loginUser != null && (loginUser.isRoleUser(CommonConst.DEF_AUTHOR_ROLE_JIMU) || loginUser.isRoleUser(CommonConst.DEF_AUTHOR_ROLE_ADMIN))) {
             model.addAttribute("authorities", CommonConst.DEF_AUTHOR_ROLE_JIMU);
         } else if (loginUser != null && loginUser.isRoleUser(CommonConst.DEF_AUTHOR_ROLE_MANAGER)) {
@@ -90,7 +98,20 @@ public class RequestController {
         }
 		ApplyDto apply = new ApplyDto(applytrRepository.findByApsNo(id));
         model.addAttribute("ApplyDto", apply);
-        return new ModelAndView("request/jimu/edit");
+        return "request/jimu/edit";
+    }
+	
+	@PostMapping(value = "/jimu/edit")
+    public String applytrEdit(@Valid ApplyDto apply, BindingResult result, final Model model, Principal principal) {
+    	System.out.println("String applytrEdit");
+    	if (!result.hasErrors()) {
+        	Applytr applytr = new Applytr();
+        	applytr.convertToApply(apply);
+        	applytrRepository.saveAndFlush(applytr);
+            return "redirect:/request/jimu/list";
+        } else {
+            return "request/jimu/edit";
+        }
     }
 
 }

@@ -28,7 +28,7 @@ public class Applytr implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "aps_no", unique = true, nullable = false)
-    private int apsNo;
+    private Integer apsNo;
 
     @Column(name = "ap_cnt", length = 300)
     private String apCnt;
@@ -64,11 +64,11 @@ public class Applytr implements Serializable {
     public Applytr() {
     }
 
-    public int getApsNo() {
+    public Integer getApsNo() {
         return this.apsNo;
     }
 
-    public void setApsNo(int apsNo) {
+    public void setApsNo(Integer apsNo) {
         this.apsNo = apsNo;
     }
 
@@ -153,6 +153,11 @@ public class Applytr implements Serializable {
     }
     
     public void convertToApply(ApplyDto dto) {
+    	
+    	if (this.apsNo == null) {
+            this.apsNo = dto.getApsNo();
+            System.out.println("this.apsNo2="+this.apsNo);
+        }
     	
     	if (this.usrId == null || "".equals(this.usrId)) {
             this.usrId = dto.getUsrId();
