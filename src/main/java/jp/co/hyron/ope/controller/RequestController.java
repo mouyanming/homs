@@ -88,7 +88,7 @@ public class RequestController {
 	
 	@GetMapping(value = "/jimu/edit/{id}")
     public String applytrEdit(@PathVariable("id") Integer id, final Model model, @AuthenticationPrincipal User loginUser) {
-		System.out.println("ModelAndView applytrEdit");
+		System.out.println("ModelAndView applytrEdit id="+id);
 		if (loginUser != null && (loginUser.isRoleUser(CommonConst.DEF_AUTHOR_ROLE_JIMU) || loginUser.isRoleUser(CommonConst.DEF_AUTHOR_ROLE_ADMIN))) {
             model.addAttribute("authorities", CommonConst.DEF_AUTHOR_ROLE_JIMU);
         } else if (loginUser != null && loginUser.isRoleUser(CommonConst.DEF_AUTHOR_ROLE_MANAGER)) {
@@ -97,13 +97,14 @@ public class RequestController {
             model.addAttribute("authorities", CommonConst.DEF_AUTHOR_ROLE_NORMAL_USER);
         }
 		ApplyDto apply = new ApplyDto(applytrRepository.findByApsNo(id));
-        model.addAttribute("ApplyDto", apply);
+        model.addAttribute("apply", apply);
         return "request/jimu/edit";
     }
 	
 	@PostMapping(value = "/jimu/edit")
     public String applytrEdit(@Valid ApplyDto apply, BindingResult result, final Model model, Principal principal) {
     	System.out.println("String applytrEdit");
+    	System.out.println("apply"+apply.getApKbName());
     	if (!result.hasErrors()) {
         	Applytr applytr = new Applytr();
         	applytr.convertToApply(apply);

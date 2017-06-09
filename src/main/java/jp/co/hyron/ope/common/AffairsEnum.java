@@ -14,9 +14,9 @@ public enum AffairsEnum {
     return this.label;
   }
   
-  public static void main(String[] args){
-    for(AffairsEnum aff : AffairsEnum.values()){
-      System.out.println("[" + aff.ordinal() + "]," + aff.name() + "," + aff.getlabel());
-    }
-  }
+//  public static void main(String[] args){
+//    for(AffairsEnum aff : AffairsEnum.values()){
+//      System.out.println("[" + aff.ordinal() + "]," + aff.name() + "," + aff.getlabel());
+//    }
+//  }
 }

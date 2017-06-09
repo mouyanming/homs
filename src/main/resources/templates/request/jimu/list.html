@@ -73,7 +73,7 @@
                                             <td th:text="${result.dlStsName}">...</td>
                                             <td th:text="${result.ddDt}"></td>
                                             <td th:text="${result.dlCmt}"></td>
-                                            <td><a th:href="@{edit(id=${result.apsNo})}" ><button type="submit" class="btn btn-primary">編集</button></a></td>
+                                            <td><!--  <a th:href="@{edit(id=${result.apsNo})}" >--><a th:href="'/request/jimu/edit/' + ${result.apsNo}"><button type="submit" class="btn btn-primary">編集</button></a></td>
                                         </tr>
 
                                     </tbody>
